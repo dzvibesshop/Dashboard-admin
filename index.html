@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dz Vibes Shop | لوحة التحكم الإدارية</title>
+
+<!-- Supabase CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ======================= SIDEBAR ======================= -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo-glow"><i class="fa-solid fa-bolt"></i></div>
+      <div class="brand-text">
+        <h1>Dz Vibes Shop</h1>
+        <span>لوحة التحكم الإدارية</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="nav-section-title">القائمة الرئيسية</span>
+      <a href="#" class="nav-item active">
+        <i class="fa-solid fa-gauge-high"></i>
+        <span>الرئيسية</span>
+      </a>
+      <a href="#products-table-container" class="nav-item">
+        <i class="fa-solid fa-boxes-stacked"></i>
+        <span>المنتجات</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span>الطلبات</span>
+        <span class="nav-badge">قريباً</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fa-solid fa-users"></i>
+        <span>العملاء</span>
+        <span class="nav-badge">قريباً</span>
+      </a>
+
+      <span class="nav-section-title">الإعدادات</span>
+      <a href="#" class="nav-item">
+        <i class="fa-solid fa-gear"></i>
+        <span>إعدادات المتجر</span>
+      </a>
+      <button type="button" id="btn-logout" class="nav-item nav-item-danger">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>تسجيل الخروج</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="admin-mini-card">
+        <div class="admin-avatar"><i class="fa-solid fa-user-shield"></i></div>
+        <div>
+          <p class="admin-name">مدير النظام</p>
+          <p class="admin-role">صلاحية كاملة</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ======================= MAIN CONTENT ======================= -->
+  <div class="main-content">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <button class="mobile-menu-btn" id="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
+      <div class="topbar-title">
+        <h2>نظرة عامة على المتجر</h2>
+        <p>إدارة كاملة لمخزون المنتجات الرقمية وشحن الألعاب</p>
+      </div>
+      <div class="topbar-actions">
+        <button id="btn-refresh" class="btn btn-ghost">
+          <i class="fa-solid fa-arrows-rotate"></i>
+          <span>تحديث</span>
+        </button>
+        <button id="btn-add-product" class="btn btn-primary">
+          <i class="fa-solid fa-plus"></i>
+          <span>إضافة منتج</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="dashboard-container">
+
+      <!-- ======================= STATS GRID ======================= -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon-wrap icon-blue"><i class="fa-solid fa-box-open"></i></div>
+          <div class="stat-info">
+            <h3 id="stat-total">0</h3>
+            <p>إجمالي المنتجات</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrap icon-green"><i class="fa-solid fa-circle-check"></i></div>
+          <div class="stat-info">
+            <h3 id="stat-available">0</h3>
+            <p>متوفر حالياً</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrap icon-orange"><i class="fa-solid fa-fire"></i></div>
+          <div class="stat-info">
+            <h3 id="stat-top">0</h3>
+            <p>الأكثر مبيعاً</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon-wrap icon-red"><i class="fa-brands fa-discord"></i></div>
+          <div class="stat-info">
+            <h3 id="stat-discord">0</h3>
+            <p>لديها رابط ديسكورد</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= GLOBAL DISCORD CONTROLLER ======================= -->
+      <section class="glass-card global-controller-card">
+        <div class="global-controller-glow"></div>
+        <div class="card-header">
+          <div class="card-header-icon"><i class="fa-brands fa-discord"></i></div>
+          <div>
+            <h2>المتحكم الشامل لروابط ديسكورد</h2>
+            <p class="card-subtitle">طبّق أو احذف رابط ديسكورد على كامل منتجات المتجر بضغطة واحدة</p>
+          </div>
+        </div>
+        <div class="global-controller-body">
+          <div class="input-icon-wrap">
+            <i class="fa-solid fa-link input-icon"></i>
+            <input
+              type="text"
+              id="global-discord-input"
+              class="input-field with-icon"
+              placeholder="ادخل رابط ديسكورد الموحد لكامل السلعة..."
+              autocomplete="off"
+            >
+          </div>
+          <div class="global-controller-buttons">
+            <button id="btn-apply-global-discord" class="btn btn-primary">
+              <i class="fa-solid fa-bolt"></i>
+              <span>تطبيق على جميع المنتجات ⚡</span>
+            </button>
+            <button id="btn-clear-global-discord" class="btn btn-danger">
+              <i class="fa-solid fa-trash"></i>
+              <span>حذف الروابط من الجميع ❌</span>
+            </button>
+          </div>
+        </div>
+        <p id="global-controller-status" class="controller-status"></p>
+      </section>
+
+      <!-- ======================= PRODUCTS TABLE ======================= -->
+      <section class="glass-card table-card">
+        <div class="card-header table-card-header">
+          <div class="card-header-icon"><i class="fa-solid fa-table-list"></i></div>
+          <div>
+            <h2>مخزون المنتجات</h2>
+            <p class="card-subtitle">إدارة، تعديل، وحذف كافة منتجات المتجر</p>
+          </div>
+          <div class="table-search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="table-search-input" placeholder="ابحث عن منتج...">
+          </div>
+        </div>
+
+        <div id="products-table-container">
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>جاري تحميل المنتجات...</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <p>Dz Vibes Shop © 2026 — لوحة تحكم إدارية احترافية</p>
+    </footer>
+  </div>
+</div>
+
+<!-- ======================= EDIT PRODUCT MODAL ======================= -->
+<div id="editProductModalOverlay" style="display:none;">
+  <div id="editProductModal" class="edit-modal-card">
+
+    <div class="edit-modal-header">
+      <span class="edit-modal-emoji">✏️</span>
+      <h2 id="editModalHeading">تعديل المنتج</h2>
+      <button id="editModalCloseBtn" type="button" class="modal-close-btn">✕</button>
+    </div>
+
+    <div class="edit-modal-body">
+      <form id="editProductForm" autocomplete="off">
+        <input type="hidden" id="edit-id">
+
+        <div class="form-grid">
+
+          <div class="form-group full-span">
+            <label for="edit-title"><i class="fa-solid fa-tag"></i> اسم المنتج</label>
+            <input type="text" id="edit-title" class="input-field" placeholder="مثال: اشتراك نتفليكس شهر واحد" required>
+          </div>
+
+          <div class="form-group full-span">
+            <label for="edit-category"><i class="fa-solid fa-layer-group"></i> القسم</label>
+            <select id="edit-category" class="input-field">
+              <option value="">اختر القسم</option>
+
+              <optgroup label="اشتراكات رقمية">
+                <option value="digital-subs__digital-key">Digital Key</option>
+                <option value="digital-subs__netflix">Netflix</option>
+                <option value="digital-subs__spotify">Spotify</option>
+                <option value="digital-subs__shahid">Shahid</option>
+                <option value="digital-subs__crunchyroll">Crunchyroll</option>
+                <option value="digital-subs__other">Other</option>
+              </optgroup>
+
+              <optgroup label="شحن ألعاب الهاتف">
+                <option value="mobile-topup__digital-key">Digital Key</option>
+                <option value="mobile-topup__uid">شحن UID</option>
+                <option value="mobile-topup__card">شحن Card</option>
+              </optgroup>
+
+              <optgroup label="بلاي ستيشن (PSN)">
+                <option value="psn__digital-key">Digital Key</option>
+                <option value="psn__games">العاب</option>
+                <option value="psn__gift-card">Gift Card</option>
+              </optgroup>
+
+              <optgroup label="إكس بوكس (Xbox)">
+                <option value="xbox__digital-key">Digital Key</option>
+                <option value="xbox__games">العاب</option>
+                <option value="xbox__gift-card">Gift Card</option>
+                <option value="xbox__game-pass">Game Pass</option>
+              </optgroup>
+
+              <optgroup label="PC ألعاب وحسابات">
+                <option value="pc__digital-key">Digital Key</option>
+                <option value="pc__shared-accounts">حسابات مشتركة</option>
+                <option value="pc__online-accounts">حسابات online</option>
+                <option value="pc__online-accounts-ar">حسابات اونلاين</option>
+                <option value="pc__gift-card">Gift Card</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="form-group full-span">
+            <label for="edit-image"><i class="fa-solid fa-image"></i> رابط صورة المنتج</label>
+            <input type="text" id="edit-image" class="input-field" placeholder="https://example.com/image.png">
+          </div>
+
+          <div class="form-group">
+            <label for="edit-cost"><i class="fa-solid fa-coins"></i> سعر التكلفة (دج)</label>
+            <input type="number" step="0.01" id="edit-cost" class="input-field" placeholder="0.00">
+          </div>
+
+          <div class="form-group">
+            <label for="edit-sellingPrice"><i class="fa-solid fa-tag"></i> سعر البيع (دج)</label>
+            <input type="number" step="0.01" id="edit-sellingPrice" class="input-field" placeholder="0.00">
+          </div>
+
+          <div class="form-group">
+            <label for="edit-discountedPrice"><i class="fa-solid fa-percent"></i> السعر بعد الخصم (دج)</label>
+            <input type="number" step="0.01" id="edit-discountedPrice" class="input-field" placeholder="0.00">
+          </div>
+
+          <div class="form-group full-span price-preview-wrapper">
+            <label><i class="fa-solid fa-chart-line"></i> معاينة السعر المباشرة</label>
+            <div id="edit-pricePreview" class="price-preview">لا يوجد بيانات كافية</div>
+          </div>
+
+          <div class="form-group full-span">
+            <label for="edit-description"><i class="fa-solid fa-align-right"></i> الوصف</label>
+            <textarea id="edit-description" class="input-field" rows="3" placeholder="أدخل وصف المنتج..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-telegram"><i class="fa-brands fa-telegram"></i> رابط تيليجرام</label>
+            <input type="text" id="edit-telegram" class="input-field" placeholder="https://t.me/...">
+          </div>
+
+          <div class="form-group">
+            <label for="edit-discord"><i class="fa-brands fa-discord"></i> رابط ديسكورد</label>
+            <input type="text" id="edit-discord" class="input-field" placeholder="https://discord.gg/...">
+          </div>
+
+          <div class="form-group switch-group">
+            <span class="switch-label"><i class="fa-solid fa-fire"></i> الأكثر مبيعاً</span>
+            <label class="switch">
+              <input type="checkbox" id="edit-topSeller">
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+
+          <div class="form-group switch-group">
+            <span class="switch-label"><i class="fa-solid fa-circle-check"></i> متوفر حالياً</span>
+            <label class="switch">
+              <input type="checkbox" id="edit-available" checked>
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+
+          <div class="form-group full-span variations-wrapper">
+            <label><i class="fa-solid fa-list-ul"></i> المتغيرات (Variations)</label>
+            <div id="editVariationsList" class="variations-list">
+              <!-- Dynamic variation rows injected here -->
+            </div>
+            <button type="button" id="editAddVariationBtn" class="btn btn-outline-primary add-variation-btn">
+              <i class="fa-solid fa-plus"></i>
+              <span>إضافة متغير جديد</span>
+            </button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+    <div class="edit-modal-footer">
+      <button id="editModalCancelBtn" type="button" class="btn btn-ghost">إلغاء</button>
+      <button id="editModalSaveBtn" type="button" class="btn btn-primary">
+        <i class="fa-solid fa-floppy-disk"></i>
+        <span>حفظ التغييرات</span>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
