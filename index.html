@@ -7,35 +7,39 @@
   <title>Dz Vibes Shop | لوحة الإدارة</title>
 
   <script>
-    const SECRET_PIN = "VibesAdmin2026_🔥";
+const SECRET_PIN = "Dz.Vibes.0107@";
 
-    (function securityGateway() {
-      let isAuthenticated = false;
+(function securityGateway() {
+    let isAuthenticated = false;
 
-      try {
+    try {
         isAuthenticated = localStorage.getItem("admin_authenticated") === "true";
-      } catch (error) {
-        console.warn("تعذر الوصول إلى التخزين المحلي:", error);
-      }
+    } catch (error) {
+        console.warn("تعذر الوصول إلى التخزين المحلي", error);
+    }
 
-      if (!isAuthenticated) {
+    if (!isAuthenticated) {
         const enteredPin = window.prompt("أدخل الرمز السري للوحة إدارة Dz Vibes Shop:");
 
-        if (enteredPin === SECRET_PIN) {
-          try {
-            localStorage.setItem("admin_authenticated", "true");
-          } catch (error) {
-            console.warn("تعذر حفظ جلسة الإدارة:", error);
-          }
+        // إضافة .trim() للتخلص من المسافات الزائدة
+        if (enteredPin !== null && enteredPin.trim() === SECRET_PIN) {
+            try {
+                localStorage.setItem("admin_authenticated", "true");
+                alert("✅ تم تسجيل الدخول بنجاح!");
+            } catch (error) {
+                console.warn("تعذر حفظ جلسة الإدارة", error);
+            }
         } else {
-          window.location.href = "https://google.com";
-          throw new Error("Unauthorized admin access blocked.");
+            // هنا قمنا بحذف الـ window.location.href لجوجل
+            alert("❌ رمز خاطئ! وصول مرفوض.");
+            // نتوقف هنا ولا ننتقل لأي مكان
+            return; 
         }
-      }
+    }
 
-      document.documentElement.classList.add("admin-authenticated");
-    })();
-  </script>
+    document.documentElement.classList.add("admin-authenticated");
+})();
+</script>
 
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
