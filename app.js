@@ -1,772 +1,632 @@
-'use strict';
+/* app.js */
 
-/* =========================================================================
-   🛡️ 1. SECURITY LOCK — MUST RUN BEFORE ANYTHING ELSE
-========================================================================= */
-const SECRET_PIN = "Dz.Vibes.0107@";
+/* ══════════════════════════════════════════════════════════════════════════
+   ① SECURITY GATEWAY
+   ══════════════════════════════════════════════════════════════════════════ */
+const SECRET_PIN = "VibesAdmin2026_🔥";
 
-function enforceAdminAccessLock() {
-  const isAuthenticated = localStorage.getItem('admin_authenticated') === 'true';
-
-  if (isAuthenticated) {
-    return true;
-  }
-
-  const enteredPin = window.prompt("أدخل رمز الدخول السري للوحة التحكم:");
-
-  if (enteredPin === SECRET_PIN) {
+if (localStorage.getItem('admin_authenticated') !== 'true') {
+  const userPin = prompt("🔒 يرجى إدخال الرمز السري للوحة التحكم:");
+  if (userPin === SECRET_PIN) {
     localStorage.setItem('admin_authenticated', 'true');
-    return true;
+  } else {
+    alert("❌ رمز خاطئ! وصول مرفوض.");
+    window.location.href = "https://google.com";
+    throw new Error("Access Denied"); // Stop execution
   }
-
-  window.alert("⛔ تم رفض الوصول. رمز الدخول غير صحيح.");
-  window.location.href = "https://google.com";
-  return false;
 }
 
-/* =========================================================================
-   ⚙️ 2. SUPABASE CONFIG — HARDCODED PRODUCTION CREDENTIALS
-   NOTE: We intentionally name the initialized client "supabaseClient"
-   instead of "supabase" to avoid shadowing/overwriting the global
-   `supabase` object exposed by the Supabase SDK (window.supabase), which
-   would otherwise throw a ReferenceError due to const temporal dead zone
-   collision (`const supabase = supabase.createClient(...)`).
-========================================================================= */
-const SUPABASE_URL = 'https://kbyjyfmifsufxbmhnwnq.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_xZPIAOb59rGWmUvnI__Pyw_ijtSFRwo';
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-const PRODUCTS_TABLE = "products";
-
-/* =========================================================================
-   🗂️ CATEGORY DISPLAY LABELS (value -> readable Arabic label)
-========================================================================= */
-const CATEGORY_LABELS = {
-  "digital-subs__digital-key": "اشتراكات رقمية — Digital Key",
-  "digital-subs__netflix": "اشتراكات رقمية — Netflix",
-  "digital-subs__spotify": "اشتراكات رقمية — Spotify",
-  "digital-subs__shahid": "اشتراكات رقمية — Shahid",
-  "digital-subs__crunchyroll": "اشتراكات رقمية — Crunchyroll",
-  "digital-subs__other": "اشتراكات رقمية — Other",
-
-  "mobile-topup__digital-key": "شحن ألعاب الهاتف — Digital Key",
-  "mobile-topup__uid": "شحن ألعاب الهاتف — شحن UID",
-  "mobile-topup__card": "شحن ألعاب الهاتف — شحن Card",
-
-  "psn__digital-key": "بلاي ستيشن (PSN) — Digital Key",
-  "psn__games": "بلاي ستيشن (PSN) — العاب",
-  "psn__gift-card": "بلاي ستيشن (PSN) — Gift Card",
-
-  "xbox__digital-key": "إكس بوكس (Xbox) — Digital Key",
-  "xbox__games": "إكس بوكس (Xbox) — العاب",
-  "xbox__gift-card": "إكس بوكس (Xbox) — Gift Card",
-  "xbox__game-pass": "إكس بوكس (Xbox) — Game Pass",
-
-  "pc__digital-key": "PC ألعاب وحسابات — Digital Key",
-  "pc__shared-accounts": "PC ألعاب وحسابات — حسابات مشتركة",
-  "pc__online-accounts": "PC ألعاب وحسابات — حسابات online",
-  "pc__online-accounts-ar": "PC ألعاب وحسابات — حسابات اونلاين",
-  "pc__gift-card": "PC ألعاب وحسابات — Gift Card"
-};
-
-function getCategoryLabel(value) {
-  if (!value) return "بدون تصنيف";
-  return CATEGORY_LABELS[value] || value;
-}
-
-/* =========================================================================
-   🌐 GLOBAL STATE
-========================================================================= */
-let currentProductsCache = [];
-let isEditingExistingProduct = true;
-
-/* =========================================================================
-   🚀 INITIALIZATION
-========================================================================= */
-document.addEventListener('DOMContentLoaded', () => {
-  const accessGranted = enforceAdminAccessLock();
-
-  // Block ALL data fetching / UI rendering unless authenticated.
-  if (!accessGranted) {
-    return;
-  }
-
-  if (!supabaseClient) {
-    renderTableError("تعذر الاتصال بقاعدة البيانات. تحقق من إعدادات Supabase.");
-    return;
-  }
-
-  bindStaticEventListeners();
-  bindGlobalDelegatedEvents();
-  fetchAndRenderProducts();
+document.getElementById('logout-btn').addEventListener('click', () => {
+  localStorage.removeItem('admin_authenticated');
+  window.location.reload();
 });
 
-/* =========================================================================
-   🔒 LOGOUT
-========================================================================= */
-function handleLogout() {
-  const confirmLogout = window.confirm("هل تريد تسجيل الخروج من لوحة التحكم؟");
-  if (confirmLogout) {
-    localStorage.removeItem('admin_authenticated');
-    window.location.reload();
-  }
+/* ══════════════════════════════════════════════════════════════════════════
+   ② SUPABASE CONFIG
+   ══════════════════════════════════════════════════════════════════════════ */
+const SUPABASE_URL      = 'https://kbyjyfmifsufxbmhnwnq.supabase.co/rest/v1/';
+const SUPABASE_ANON_KEY = 'sb_publishable_xZPIAOb59rGWmUvnI__Pyw_ijtSFRwo';
+const supabaseClient    = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ③ UTILS & TOAST
+   ══════════════════════════════════════════════════════════════════════════ */
+let toastTimeout;
+function showToast(message, type = 'success') {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.className = `fixed top-5 left-1/2 -translate-x-1/2 px-6 py-3 rounded-full font-bold shadow-lg transition-all z-50 text-white ${
+    type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600'
+  }`;
+  
+  // Trigger animation
+  setTimeout(() => {
+    toast.classList.remove('-translate-y-20', 'opacity-0');
+    toast.classList.add('translate-y-0', 'opacity-100');
+  }, 10);
+
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => {
+    toast.classList.remove('translate-y-0', 'opacity-100');
+    toast.classList.add('-translate-y-20', 'opacity-0');
+  }, 3000);
 }
 
-/* =========================================================================
-   📡 CORE CRUD — FETCH PRODUCTS
-========================================================================= */
-async function fetchAndRenderProducts() {
-  const container = document.getElementById('products-table-container');
-  container.innerHTML = `
-    <div class="loading-state">
-      <div class="spinner"></div>
-      <p>جاري تحميل المنتجات...</p>
+const generateId = () => Date.now().toString(36) + Math.random().toString(36).substring(2, 8);
+
+function formatPrice(value) {
+  const r = Math.round((parseFloat(value) || 0) * 100) / 100;
+  return r % 1 === 0 ? r.toString() : r.toFixed(2);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ④ SIDEBAR TABS TOGGLING
+   ══════════════════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.sidebar-tab').forEach(tab => {
+  tab.addEventListener('click', (e) => {
+    document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active', 'text-white', 'bg-red-600'));
+    tab.classList.add('active', 'text-white');
+    
+    // Hide all sections
+    document.querySelectorAll('.tab-content').forEach(sec => {
+      sec.classList.remove('block');
+      sec.classList.add('hidden');
+    });
+    
+    // Show target section
+    const targetId = tab.dataset.target;
+    const targetEl = document.getElementById(targetId);
+    targetEl.classList.remove('hidden');
+    targetEl.classList.add('block');
+  });
+});
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ⑤ PRODUCTS MANAGEMENT
+   ══════════════════════════════════════════════════════════════════════════ */
+let productsData = [];
+let currentVariations = []; // Temporary array for modal variations
+
+async function loadProducts() {
+  const grid = document.getElementById('products-grid');
+  const loader = document.getElementById('products-loader');
+  
+  grid.classList.add('hidden');
+  loader.classList.remove('hidden');
+  loader.innerHTML = Array(8).fill(`
+    <div class="skeleton-card h-80">
+      <div class="skeleton-image skeleton-shimmer"></div>
+      <div class="skeleton-body">
+        <div class="skeleton-line w-80 skeleton-shimmer"></div>
+        <div class="skeleton-line w-55 skeleton-shimmer"></div>
+        <div class="skeleton-btn-row">
+          <div class="skeleton-btn skeleton-shimmer"></div>
+        </div>
+      </div>
     </div>
-  `;
+  `).join('');
 
-  try {
-    const { data, error } = await supabaseClient
-      .from(PRODUCTS_TABLE)
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) throw error;
-
-    currentProductsCache = data || [];
-    renderProductsTable(currentProductsCache);
-    updateStats(currentProductsCache);
-  } catch (err) {
-    console.error("Error fetching products:", err);
-    renderTableError("حدث خطأ أثناء تحميل المنتجات: " + err.message);
+  const { data, error } = await supabaseClient.from('products').select('*').order('id', { ascending: true });
+  
+  if (error) {
+    showToast('خطأ في جلب المنتجات: ' + error.message, 'error');
+    return;
   }
+  
+  productsData = data || [];
+  renderProducts();
 }
 
-/* =========================================================================
-   🖼️ RENDER TABLE
-========================================================================= */
-function renderProductsTable(products) {
-  const container = document.getElementById('products-table-container');
+function renderProducts() {
+  const grid = document.getElementById('products-grid');
+  const loader = document.getElementById('products-loader');
+  
+  loader.classList.add('hidden');
+  grid.classList.remove('hidden');
+  grid.innerHTML = '';
 
-  if (!products || products.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <i class="fa-solid fa-inbox"></i>
-        <p>لا توجد منتجات حالياً. ابدأ بإضافة منتج جديد.</p>
+  if (productsData.length === 0) {
+    grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-500 font-bold">لا توجد منتجات حالياً.</div>`;
+    return;
+  }
+
+  productsData.forEach(row => {
+    let meta = {};
+    let desc = row.description || '';
+    if (desc.startsWith('__meta__')) {
+      const newline = desc.indexOf('\n');
+      try {
+        const jsonStr = newline === -1 ? desc.slice(8) : desc.slice(8, newline);
+        meta = JSON.parse(jsonStr);
+      } catch (e) {}
+    }
+
+    const price = parseFloat(row.price) || 0;
+    const isAvail = row.is_available !== false; // Default true if null
+    const isHot = row.is_hot === true;
+    
+    // variations is directly from jsonb array
+    const vars = row.variations || [];
+    const hasVars = Array.isArray(vars) && vars.length > 0;
+
+    grid.innerHTML += `
+      <div class="bg-[#161616] border border-gray-800 rounded-2xl overflow-hidden flex flex-col hover:border-gray-600 transition-colors shadow-lg">
+        <div class="h-40 overflow-hidden relative">
+          <img src="${row.image_url}" alt="${row.title}" class="w-full h-full object-cover">
+          ${isHot ? '<span class="absolute top-2 left-2 bg-orange-600 text-white text-xs font-bold px-2 py-1 rounded">🔥 الأكثر مبيعاً</span>' : ''}
+          ${!isAvail ? '<span class="absolute top-2 right-2 bg-gray-900/80 text-white text-xs font-bold px-2 py-1 rounded backdrop-blur">غير متوفر</span>' : ''}
+        </div>
+        <div class="p-4 flex flex-col flex-1">
+          <h3 class="font-bold text-lg text-white mb-1 line-clamp-1" title="${row.title}">${row.title}</h3>
+          <p class="text-sm text-gray-400 mb-2">${row.category}</p>
+          <div class="text-xl font-black text-red-500 mb-4 mt-auto">
+            ${hasVars ? `${vars.length} باقات` : `${formatPrice(price)} DA`}
+          </div>
+          <div class="flex gap-2">
+            <button class="edit-product-btn flex-1 bg-blue-600/20 hover:bg-blue-600 text-blue-500 hover:text-white py-2 rounded-lg font-bold transition-colors" data-id="${row.id}">تعديل</button>
+            <button class="delete-product-btn bg-red-600/20 hover:bg-red-600 text-red-500 hover:text-white px-4 py-2 rounded-lg font-bold transition-colors" data-id="${row.id}">🗑️</button>
+          </div>
+        </div>
       </div>
     `;
-    return;
-  }
-
-  const rows = products.map(buildProductRowHTML).join('');
-
-  container.innerHTML = `
-    <div class="table-wrapper">
-      <table class="products-table">
-        <thead>
-          <tr>
-            <th>المنتج</th>
-            <th>القسم</th>
-            <th>السعر (دج)</th>
-            <th>ديسكورد</th>
-            <th>تيليجرام</th>
-            <th>الأكثر مبيعاً</th>
-            <th>الحالة</th>
-            <th>إجراءات</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${rows}
-        </tbody>
-      </table>
-    </div>
-  `;
-}
-
-function buildProductRowHTML(product) {
-  const imageUrl = product.image || 'https://via.placeholder.com/46x46/14141c/ff1e27?text=%20';
-  const hasDiscount = product.discountedPrice && Number(product.discountedPrice) > 0 &&
-    Number(product.discountedPrice) < Number(product.sellingPrice || 0);
-
-  const priceHTML = hasDiscount
-    ? `<span class="price-cell"><del>${escapeHTML(product.sellingPrice)} دج</del> <strong>${escapeHTML(product.discountedPrice)} دج</strong></span>`
-    : `<span class="price-cell"><strong>${escapeHTML(product.sellingPrice ?? '—')} دج</strong></span>`;
-
-  const discordBadge = product.discord
-    ? `<span class="badge badge-success"><i class="fa-brands fa-discord"></i> مفعّل</span>`
-    : `<span class="badge badge-neutral">غير مضاف</span>`;
-
-  const telegramBadge = product.telegram
-    ? `<span class="badge badge-success"><i class="fa-brands fa-telegram"></i> مفعّل</span>`
-    : `<span class="badge badge-neutral">غير مضاف</span>`;
-
-  const topSellerBadge = product.topSeller
-    ? `<span class="badge badge-fire"><i class="fa-solid fa-fire"></i> نعم</span>`
-    : `<span class="badge badge-neutral">لا</span>`;
-
-  const availableBadge = product.available
-    ? `<span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> متوفر</span>`
-    : `<span class="badge badge-danger"><i class="fa-solid fa-circle-xmark"></i> غير متوفر</span>`;
-
-  return `
-    <tr data-row-id="${product.id}" data-search-blob="${escapeAttr((product.title || '') + ' ' + getCategoryLabel(product.category))}">
-      <td>
-        <div class="product-title-cell">
-          <img class="product-thumb" src="${escapeAttr(imageUrl)}" alt="" onerror="this.src='https://via.placeholder.com/46x46/14141c/ff1e27?text=%20'">
-          <span>${escapeHTML(product.title || 'بدون اسم')}</span>
-        </div>
-      </td>
-      <td>${escapeHTML(getCategoryLabel(product.category))}</td>
-      <td>${priceHTML}</td>
-      <td>${discordBadge}</td>
-      <td>${telegramBadge}</td>
-      <td>${topSellerBadge}</td>
-      <td>${availableBadge}</td>
-      <td>
-        <div class="actions-cell">
-          <button type="button" class="icon-btn edit-btn" data-action="edit-product" data-id="${product.id}" title="تعديل"><i class="fa-solid fa-pen"></i></button>
-          <button type="button" class="icon-btn delete-btn" data-action="delete-product" data-id="${product.id}" title="حذف"><i class="fa-solid fa-trash"></i></button>
-        </div>
-      </td>
-    </tr>
-  `;
-}
-
-function renderTableError(message) {
-  const container = document.getElementById('products-table-container');
-  container.innerHTML = `
-    <div class="empty-state">
-      <i class="fa-solid fa-triangle-exclamation"></i>
-      <p>${escapeHTML(message)}</p>
-    </div>
-  `;
-}
-
-/* =========================================================================
-   📊 STATS
-========================================================================= */
-function updateStats(products) {
-  const total = products.length;
-  const available = products.filter(p => p.available).length;
-  const topSellers = products.filter(p => p.topSeller).length;
-  const withDiscord = products.filter(p => p.discord && p.discord.trim() !== '').length;
-
-  animateStatValue('stat-total', total);
-  animateStatValue('stat-available', available);
-  animateStatValue('stat-top', topSellers);
-  animateStatValue('stat-discord', withDiscord);
-}
-
-function animateStatValue(elementId, targetValue) {
-  const el = document.getElementById(elementId);
-  if (!el) return;
-  el.textContent = targetValue;
-}
-
-/* =========================================================================
-   🔎 TABLE SEARCH
-========================================================================= */
-function filterProductsTable(query) {
-  const normalizedQuery = query.trim().toLowerCase();
-  const rows = document.querySelectorAll('.products-table tbody tr');
-
-  rows.forEach(row => {
-    const blob = (row.getAttribute('data-search-blob') || '').toLowerCase();
-    row.style.display = blob.includes(normalizedQuery) ? '' : 'none';
   });
 }
 
-/* =========================================================================
-   🧩 EDIT MODAL — OPEN / CLOSE
-========================================================================= */
-function openEditModal(productId) {
-  const product = currentProductsCache.find(p => String(p.id) === String(productId));
-  if (!product) {
-    window.alert("تعذر العثور على بيانات هذا المنتج.");
-    return;
-  }
+// Opening the Product Modal
+document.getElementById('add-product-btn').addEventListener('click', () => {
+  openProductModal();
+});
 
-  isEditingExistingProduct = true;
-
-  document.getElementById('editModalHeading').textContent = "تعديل المنتج";
-  document.getElementById('edit-id').value = product.id;
-  document.getElementById('edit-title').value = product.title || '';
-  document.getElementById('edit-category').value = product.category || '';
-  document.getElementById('edit-image').value = product.image || '';
-  document.getElementById('edit-cost').value = product.cost ?? '';
-  document.getElementById('edit-sellingPrice').value = product.sellingPrice ?? '';
-  document.getElementById('edit-discountedPrice').value = product.discountedPrice ?? '';
-  document.getElementById('edit-description').value = product.description || '';
-  document.getElementById('edit-telegram').value = product.telegram || '';
-  document.getElementById('edit-discord').value = product.discord || '';
-  document.getElementById('edit-topSeller').checked = !!product.topSeller;
-  document.getElementById('edit-available').checked = product.available !== false;
-
-  renderVariationsList(parseVariations(product.variations));
-  updatePricePreview();
-  showEditModal();
-}
-
-function openAddProductModal() {
-  isEditingExistingProduct = false;
-
-  document.getElementById('editModalHeading').textContent = "إضافة منتج جديد";
-  document.getElementById('editProductForm').reset();
-  document.getElementById('edit-id').value = '';
-  document.getElementById('edit-available').checked = true;
-
-  renderVariationsList([]);
-  updatePricePreview();
-  showEditModal();
-}
-
-function showEditModal() {
-  const overlay = document.getElementById('editProductModalOverlay');
-  overlay.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
-
-function closeEditModal() {
-  const overlay = document.getElementById('editProductModalOverlay');
-  overlay.style.display = 'none';
-  document.body.style.overflow = '';
-  document.getElementById('editProductForm').reset();
-  document.getElementById('editVariationsList').innerHTML = '';
-}
-
-/* =========================================================================
-   🧬 VARIATIONS MANAGEMENT
-========================================================================= */
-function parseVariations(rawVariations) {
-  if (!rawVariations) return [];
-  if (Array.isArray(rawVariations)) return rawVariations;
-  if (typeof rawVariations === 'string') {
-    try {
-      const parsed = JSON.parse(rawVariations);
-      return Array.isArray(parsed) ? parsed : [];
-    } catch (e) {
-      return rawVariations.split(',').map(v => v.trim()).filter(Boolean);
+function openProductModal(productId = null) {
+  const modal = document.getElementById('product-modal');
+  const modalContent = document.getElementById('product-modal-content');
+  const title = document.getElementById('product-modal-title');
+  const form = document.getElementById('product-form');
+  
+  form.reset();
+  currentVariations = [];
+  
+  if (productId) {
+    const product = productsData.find(p => p.id == productId);
+    if (!product) return;
+    
+    title.textContent = 'تعديل المنتج';
+    document.getElementById('p-id').value = product.id;
+    document.getElementById('p-title').value = product.title || '';
+    document.getElementById('p-category').value = product.category || 'pc';
+    document.getElementById('p-image').value = product.image_url || '';
+    document.getElementById('p-price').value = product.price || '';
+    
+    // Parse description/meta
+    let meta = {};
+    let desc = product.description || '';
+    if (desc.startsWith('__meta__')) {
+      const newline = desc.indexOf('\n');
+      try {
+        const jsonStr = newline === -1 ? desc.slice(8) : desc.slice(8, newline);
+        meta = JSON.parse(jsonStr);
+        desc = newline === -1 ? '' : desc.slice(newline + 1);
+      } catch (e) {}
     }
+    
+    document.getElementById('p-desc').value = desc;
+    document.getElementById('p-cost').value = meta.cost || '';
+    document.getElementById('p-profit').value = meta.profitPercent || '';
+    document.getElementById('p-discount').value = meta.discountPercent || '';
+    document.getElementById('p-telegram').value = meta.telegramUsername || '';
+    
+    // Direct Columns
+    document.getElementById('p-available').checked = product.is_available !== false;
+    document.getElementById('p-hot').checked = product.is_hot === true;
+    document.getElementById('p-discord').value = product.discord_link || '';
+    
+    // Variations
+    let rawVars = product.variations;
+    if (typeof rawVars === 'string') {
+      try { rawVars = JSON.parse(rawVars); } catch(e) { rawVars = []; }
+    }
+    currentVariations = Array.isArray(rawVars) ? [...rawVars] : [];
+    
+  } else {
+    title.textContent = 'إضافة منتج جديد';
+    document.getElementById('p-id').value = '';
+    document.getElementById('p-available').checked = true;
   }
-  return [];
+  
+  renderModalVariations();
+  
+  modal.classList.remove('hidden');
+  // Small delay to allow display:block to apply before animating opacity/transform
+  setTimeout(() => {
+    modalContent.classList.remove('scale-95', 'opacity-0');
+    modalContent.classList.add('scale-100', 'opacity-100');
+  }, 10);
 }
 
-function renderVariationsList(variations) {
-  const list = document.getElementById('editVariationsList');
+function closeProductModal() {
+  const modal = document.getElementById('product-modal');
+  const modalContent = document.getElementById('product-modal-content');
+  
+  modalContent.classList.remove('scale-100', 'opacity-100');
+  modalContent.classList.add('scale-95', 'opacity-0');
+  
+  setTimeout(() => {
+    modal.classList.add('hidden');
+  }, 300); // Wait for transition
+}
 
-  if (!variations || variations.length === 0) {
-    list.innerHTML = `<p class="variations-empty" id="variations-empty-hint">لا توجد متغيرات مضافة حالياً.</p>`;
+document.querySelectorAll('.close-modal-btn').forEach(btn => {
+  btn.addEventListener('click', closeProductModal);
+});
+
+// Variations UI Logic
+function renderModalVariations() {
+  const container = document.getElementById('variations-container');
+  const msg = document.getElementById('no-vars-msg');
+  
+  if (currentVariations.length === 0) {
+    container.innerHTML = '';
+    msg.classList.remove('hidden');
     return;
   }
-
-  list.innerHTML = variations.map((value, index) => buildVariationRowHTML(value, index)).join('');
-}
-
-function buildVariationRowHTML(value, index) {
-  return `
-    <div class="variation-row" data-variation-index="${index}">
-      <input type="text" class="input-field variation-input" value="${escapeAttr(value)}" placeholder="مثال: باقة 60 شدة - 500 دج">
-      <button type="button" class="remove-variation-btn" data-action="remove-variation" data-index="${index}" title="حذف"><i class="fa-solid fa-xmark"></i></button>
+  msg.classList.add('hidden');
+  
+  container.innerHTML = currentVariations.map(v => `
+    <div class="flex flex-col md:flex-row gap-3 items-center bg-[#1a1a1a] p-3 rounded-lg border border-gray-700 shadow-inner" data-var-id="${v.id}">
+      <input type="text" class="var-name w-full md:w-1/2 p-2 bg-[#0f0f0f] rounded border border-gray-600 focus:border-red-500 outline-none text-white text-sm" placeholder="اسم الباقة" value="${v.name || ''}">
+      
+      <div class="flex w-full md:w-1/2 gap-3 items-center">
+        <input type="number" class="var-price flex-1 p-2 bg-[#0f0f0f] rounded border border-gray-600 focus:border-red-500 outline-none text-white text-sm" placeholder="السعر" step="0.01" value="${v.price || ''}">
+        
+        <label class="flex items-center gap-1 cursor-pointer whitespace-nowrap">
+          <input type="checkbox" class="var-avail w-4 h-4 accent-red-600" ${v.is_available !== false ? 'checked' : ''}>
+          <span class="text-sm font-bold">متوفر</span>
+        </label>
+        
+        <button type="button" class="delete-var-btn bg-red-600 hover:bg-red-700 text-white p-2 rounded transition-colors" title="حذف الباقة">🗑️</button>
+      </div>
     </div>
-  `;
+  `).join('');
 }
 
-function addVariationField() {
-  const list = document.getElementById('editVariationsList');
-  const emptyHint = document.getElementById('variations-empty-hint');
-  if (emptyHint) emptyHint.remove();
-
-  const currentCount = list.querySelectorAll('.variation-row').length;
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = buildVariationRowHTML('', currentCount).trim();
-  list.appendChild(wrapper.firstChild);
-}
-
-function removeVariationField(index) {
-  const list = document.getElementById('editVariationsList');
-  const row = list.querySelector(`.variation-row[data-variation-index="${index}"]`);
-  if (row) row.remove();
-
-  // Re-index remaining rows to keep data-index consistent
-  const remainingRows = list.querySelectorAll('.variation-row');
-  remainingRows.forEach((r, i) => {
-    r.setAttribute('data-variation-index', i);
-    const btn = r.querySelector('.remove-variation-btn');
-    if (btn) btn.setAttribute('data-index', i);
+document.getElementById('add-var-btn').addEventListener('click', () => {
+  currentVariations.push({
+    id: generateId(),
+    name: '',
+    price: 0,
+    is_available: true
   });
+  renderModalVariations();
+  // Scroll to bottom
+  const container = document.getElementById('variations-container');
+  container.scrollTop = container.scrollHeight;
+});
 
-  if (remainingRows.length === 0) {
-    list.innerHTML = `<p class="variations-empty" id="variations-empty-hint">لا توجد متغيرات مضافة حالياً.</p>`;
-  }
-}
-
-function collectVariationsFromForm() {
-  const inputs = document.querySelectorAll('#editVariationsList .variation-input');
-  const values = [];
-  inputs.forEach(input => {
-    const val = input.value.trim();
-    if (val !== '') values.push(val);
-  });
-  return values;
-}
-
-/* =========================================================================
-   💰 LIVE PRICE PREVIEW (DA — Algerian Dinar)
-========================================================================= */
-function updatePricePreview() {
-  const cost = parseFloat(document.getElementById('edit-cost').value);
-  const sellingPrice = parseFloat(document.getElementById('edit-sellingPrice').value);
-  const discountedPrice = parseFloat(document.getElementById('edit-discountedPrice').value);
-  const previewEl = document.getElementById('edit-pricePreview');
-
-  if (isNaN(sellingPrice) && isNaN(discountedPrice)) {
-    previewEl.textContent = "لا يوجد بيانات كافية";
+// Save Product logic
+document.getElementById('save-product-btn').addEventListener('click', async () => {
+  const form = document.getElementById('product-form');
+  if (!form.checkValidity()) {
+    form.reportValidity();
     return;
   }
 
-  let previewText = '';
-
-  if (!isNaN(discountedPrice) && discountedPrice > 0 && !isNaN(sellingPrice) && discountedPrice < sellingPrice) {
-    const discountPercent = (((sellingPrice - discountedPrice) / sellingPrice) * 100).toFixed(0);
-    previewText = `السعر النهائي: ${discountedPrice} دج (بدلاً من ${sellingPrice} دج) — خصم ${discountPercent}%`;
-  } else if (!isNaN(sellingPrice)) {
-    previewText = `السعر النهائي: ${sellingPrice} دج`;
-  }
-
-  if (!isNaN(cost) && !isNaN(sellingPrice)) {
-    const effectivePrice = (!isNaN(discountedPrice) && discountedPrice > 0) ? discountedPrice : sellingPrice;
-    const profit = (effectivePrice - cost).toFixed(2);
-    previewText += ` | الربح التقديري: ${profit} دج`;
-  }
-
-  previewEl.textContent = previewText || "لا يوجد بيانات كافية";
-}
-
-/* =========================================================================
-   💾 SAVE HANDLER (CREATE / UPDATE)
-========================================================================= */
-async function _handleEditModalSave() {
-  const saveBtn = document.getElementById('editModalSaveBtn');
-  const productId = document.getElementById('edit-id').value;
-
-  const title = document.getElementById('edit-title').value.trim();
-  if (!title) {
-    window.alert("يرجى إدخال اسم المنتج.");
-    return;
-  }
+  const id = document.getElementById('p-id').value;
+  
+  // Construct Meta JSON
+  const metaObj = {
+    cost: parseFloat(document.getElementById('p-cost').value) || 0,
+    profitPercent: parseFloat(document.getElementById('p-profit').value) || 0,
+    discountPercent: parseFloat(document.getElementById('p-discount').value) || 0,
+    telegramUsername: document.getElementById('p-telegram').value.trim()
+  };
+  
+  const rawDesc = document.getElementById('p-desc').value.trim();
+  const finalDescription = `__meta__${JSON.stringify(metaObj)}\n${rawDesc}`;
+  
+  // Clean variations (remove empty names)
+  const cleanedVars = currentVariations.filter(v => v.name && v.name.trim() !== '');
 
   const payload = {
-    title: title,
-    category: document.getElementById('edit-category').value,
-    image: document.getElementById('edit-image').value.trim(),
-    cost: parseFloatOrNull(document.getElementById('edit-cost').value),
-    sellingPrice: parseFloatOrNull(document.getElementById('edit-sellingPrice').value),
-    discountedPrice: parseFloatOrNull(document.getElementById('edit-discountedPrice').value),
-    description: document.getElementById('edit-description').value.trim(),
-    telegram: document.getElementById('edit-telegram').value.trim(),
-    discord: document.getElementById('edit-discord').value.trim(),
-    topSeller: document.getElementById('edit-topSeller').checked,
-    available: document.getElementById('edit-available').checked,
-    variations: collectVariationsFromForm()
+    title: document.getElementById('p-title').value.trim(),
+    category: document.getElementById('p-category').value.trim(),
+    image_url: document.getElementById('p-image').value.trim(),
+    price: parseFloat(document.getElementById('p-price').value) || 0,
+    description: finalDescription,
+    is_available: document.getElementById('p-available').checked,
+    is_hot: document.getElementById('p-hot').checked,
+    discord_link: document.getElementById('p-discord').value.trim(),
+    variations: cleanedVars
   };
 
-  const originalHTML = saveBtn.innerHTML;
-  saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>جاري الحفظ...</span>';
-  saveBtn.disabled = true;
+  document.getElementById('save-product-btn').textContent = 'جاري الحفظ...';
+  document.getElementById('save-product-btn').disabled = true;
 
   try {
-    let error;
-
-    if (isEditingExistingProduct && productId) {
-      const result = await supabaseClient
-        .from(PRODUCTS_TABLE)
-        .update(payload)
-        .eq('id', productId);
-      error = result.error;
+    let result;
+    if (id) {
+      // Update
+      result = await supabaseClient.from('products').update(payload).eq('id', id);
     } else {
-      const result = await supabaseClient
-        .from(PRODUCTS_TABLE)
-        .insert([payload]);
-      error = result.error;
+      // Insert
+      result = await supabaseClient.from('products').insert([payload]);
     }
 
-    if (error) throw error;
-
-    saveBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i><span>تم الحفظ</span>';
-    await fetchAndRenderProducts();
-
-    setTimeout(() => {
-      closeEditModal();
-      saveBtn.innerHTML = originalHTML;
-      saveBtn.disabled = false;
-    }, 500);
-
+    if (result.error) throw result.error;
+    
+    showToast('✅ تم حفظ المنتج بنجاح!');
+    closeProductModal();
+    loadProducts();
   } catch (err) {
-    console.error("Error saving product:", err);
-    window.alert("حدث خطأ أثناء الحفظ: " + err.message);
-    saveBtn.innerHTML = originalHTML;
-    saveBtn.disabled = false;
+    showToast('❌ حدث خطأ أثناء الحفظ: ' + err.message, 'error');
+  } finally {
+    document.getElementById('save-product-btn').textContent = 'حفظ المنتج';
+    document.getElementById('save-product-btn').disabled = false;
   }
-}
+});
 
-function parseFloatOrNull(value) {
-  const parsed = parseFloat(value);
-  return isNaN(parsed) ? null : parsed;
-}
 
-/* =========================================================================
-   🗑️ DELETE PRODUCT
-========================================================================= */
-async function deleteProduct(productId) {
-  const confirmDelete = window.confirm("هل أنت متأكد من حذف هذا المنتج؟ لا يمكن التراجع عن هذا الإجراء.");
-  if (!confirmDelete) return;
+/* ══════════════════════════════════════════════════════════════════════════
+   ⑥ PROMO CODES MANAGEMENT
+   ══════════════════════════════════════════════════════════════════════════ */
+let promoData = [];
 
-  const row = document.querySelector(`tr[data-row-id="${productId}"]`);
-  if (row) row.style.opacity = '0.4';
+async function loadPromos() {
+  const tbody = document.getElementById('promo-tbody');
+  const loader = document.getElementById('promo-loader');
+  
+  tbody.innerHTML = '';
+  loader.classList.remove('hidden');
 
-  try {
-    const { error } = await supabaseClient
-      .from(PRODUCTS_TABLE)
-      .delete()
-      .eq('id', productId);
-
-    if (error) throw error;
-
-    await fetchAndRenderProducts();
-  } catch (err) {
-    console.error("Error deleting product:", err);
-    window.alert("حدث خطأ أثناء حذف المنتج: " + err.message);
-    if (row) row.style.opacity = '1';
+  const { data, error } = await supabaseClient.from('promo_codes').select('*').order('created_at', { ascending: true });
+  
+  if (error) {
+    showToast('خطأ في جلب الكوبونات: ' + error.message, 'error');
+    return;
   }
+  
+  promoData = data || [];
+  renderPromos();
 }
 
-/* =========================================================================
-   ⚡ GLOBAL DISCORD BULK CONTROLLER
-========================================================================= */
-async function applyGlobalDiscordToAll() {
-  const input = document.getElementById('global-discord-input');
-  const btn = document.getElementById('btn-apply-global-discord');
-  const statusEl = document.getElementById('global-controller-status');
-  const discordValue = input.value.trim();
-
-  if (!discordValue) {
-    window.alert("يرجى إدخال رابط ديسكورد أولاً قبل التطبيق على الجميع.");
+function renderPromos() {
+  const tbody = document.getElementById('promo-tbody');
+  const loader = document.getElementById('promo-loader');
+  loader.classList.add('hidden');
+  
+  if (promoData.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-gray-500 font-bold">لا توجد أكواد خصم حالياً.</td></tr>`;
     return;
   }
 
-  const confirmApply = window.confirm(`سيتم تطبيق الرابط التالي على جميع المنتجات:\n${discordValue}\nهل تريد المتابعة؟`);
-  if (!confirmApply) return;
+  tbody.innerHTML = promoData.map(row => `
+    <tr class="hover:bg-gray-800/50 transition-colors">
+      <td class="p-4 font-mono font-bold text-white text-lg">${row.code}</td>
+      <td class="p-4 font-bold text-red-500">${row.discount_percent}%</td>
+      <td class="p-4">
+        ${row.is_active !== false 
+          ? '<span class="bg-green-900/40 text-green-500 px-3 py-1 rounded-full text-sm font-bold border border-green-800">مفعل</span>' 
+          : '<span class="bg-gray-800 text-gray-500 px-3 py-1 rounded-full text-sm font-bold border border-gray-700">معطل</span>'}
+      </td>
+      <td class="p-4 text-left">
+        <button class="edit-promo-btn bg-blue-600/20 hover:bg-blue-600 text-blue-500 hover:text-white p-2 rounded transition-colors ml-2" data-id="${row.id}">✏️</button>
+        <button class="delete-promo-btn bg-red-600/20 hover:bg-red-600 text-red-500 hover:text-white p-2 rounded transition-colors" data-id="${row.id}">🗑️</button>
+      </td>
+    </tr>
+  `).join('');
+}
 
-  const originalHTML = btn.innerHTML;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>جاري التحديث...</span>';
-  btn.disabled = true;
-  setStatusMessage(statusEl, "جاري تطبيق الرابط على جميع المنتجات...", '');
+// Promo Modal
+document.getElementById('add-promo-btn').addEventListener('click', () => openPromoModal());
+
+function openPromoModal(promoId = null) {
+  const modal = document.getElementById('promo-modal');
+  const modalContent = document.getElementById('promo-modal-content');
+  const title = document.getElementById('promo-modal-title');
+  const form = document.getElementById('promo-form');
+  
+  form.reset();
+  
+  if (promoId) {
+    const promo = promoData.find(p => p.id == promoId);
+    if (!promo) return;
+    
+    title.textContent = 'تعديل الكوبون';
+    document.getElementById('pr-id').value = promo.id;
+    document.getElementById('pr-code').value = promo.code || '';
+    document.getElementById('pr-discount').value = promo.discount_percent || '';
+    document.getElementById('pr-active').checked = promo.is_active !== false;
+  } else {
+    title.textContent = 'إضافة كوبون جديد';
+    document.getElementById('pr-id').value = '';
+    document.getElementById('pr-active').checked = true;
+  }
+  
+  modal.classList.remove('hidden');
+  setTimeout(() => {
+    modalContent.classList.remove('scale-95', 'opacity-0');
+    modalContent.classList.add('scale-100', 'opacity-100');
+  }, 10);
+}
+
+function closePromoModal() {
+  const modal = document.getElementById('promo-modal');
+  const modalContent = document.getElementById('promo-modal-content');
+  
+  modalContent.classList.remove('scale-100', 'opacity-100');
+  modalContent.classList.add('scale-95', 'opacity-0');
+  
+  setTimeout(() => {
+    modal.classList.add('hidden');
+  }, 300);
+}
+
+document.querySelectorAll('.close-promo-btn').forEach(btn => {
+  btn.addEventListener('click', closePromoModal);
+});
+
+document.getElementById('save-promo-btn').addEventListener('click', async () => {
+  const form = document.getElementById('promo-form');
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
+
+  const id = document.getElementById('pr-id').value;
+  const payload = {
+    code: document.getElementById('pr-code').value.trim().toUpperCase(),
+    discount_percent: parseFloat(document.getElementById('pr-discount').value) || 0,
+    is_active: document.getElementById('pr-active').checked
+  };
+
+  document.getElementById('save-promo-btn').textContent = 'جاري الحفظ...';
+  document.getElementById('save-promo-btn').disabled = true;
 
   try {
-    const { error } = await supabaseClient
-      .from(PRODUCTS_TABLE)
-      .update({ discord: discordValue })
-      .not('id', 'is', null); // matches all rows
+    let result;
+    if (id) {
+      result = await supabaseClient.from('promo_codes').update(payload).eq('id', id);
+    } else {
+      result = await supabaseClient.from('promo_codes').insert([payload]);
+    }
 
-    if (error) throw error;
-
-    setStatusMessage(statusEl, "✅ تم تطبيق الرابط على جميع المنتجات بنجاح.", 'success');
-    await fetchAndRenderProducts();
+    if (result.error) throw result.error;
+    
+    showToast('✅ تم حفظ الكوبون بنجاح!');
+    closePromoModal();
+    loadPromos();
   } catch (err) {
-    console.error("Error applying global discord:", err);
-    setStatusMessage(statusEl, "❌ حدث خطأ أثناء التحديث: " + err.message, 'error');
+    showToast('❌ حدث خطأ أثناء الحفظ: ' + err.message, 'error');
   } finally {
-    btn.innerHTML = originalHTML;
-    btn.disabled = false;
+    document.getElementById('save-promo-btn').textContent = 'حفظ الكوبون';
+    document.getElementById('save-promo-btn').disabled = false;
+  }
+});
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ⑦ STORE SETTINGS MANAGEMENT
+   ══════════════════════════════════════════════════════════════════════════ */
+async function loadStoreSettings() {
+  try {
+    const { data, error } = await supabaseClient.from('store_settings').select('*').eq('id', 1).single();
+    
+    if (data) {
+      document.getElementById('setting-maintenance').checked = data.is_maintenance || false;
+      document.getElementById('setting-telegram').value = data.telegram_link || '';
+      document.getElementById('setting-discord').value = data.discord_link || '';
+      document.getElementById('setting-banner').value = data.announcement_text || '';
+    }
+  } catch (err) {
+    console.warn("Store settings table might not exist yet.", err);
   }
 }
 
-async function clearGlobalDiscordFromAll() {
-  const btn = document.getElementById('btn-clear-global-discord');
-  const statusEl = document.getElementById('global-controller-status');
-
-  const confirmClear = window.confirm("سيتم حذف روابط ديسكورد من جميع المنتجات نهائياً. هل تريد المتابعة؟");
-  if (!confirmClear) return;
-
-  const originalHTML = btn.innerHTML;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>جاري الحذف...</span>';
+document.getElementById('settings-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const btn = document.getElementById('save-settings-btn');
+  btn.innerHTML = 'جاري الحفظ ⏳';
   btn.disabled = true;
-  setStatusMessage(statusEl, "جاري حذف الروابط من جميع المنتجات...", '');
+
+  const payload = {
+    id: 1, // Fixed ID for single settings row
+    is_maintenance: document.getElementById('setting-maintenance').checked,
+    telegram_link: document.getElementById('setting-telegram').value.trim(),
+    discord_link: document.getElementById('setting-discord').value.trim(),
+    announcement_text: document.getElementById('setting-banner').value.trim()
+  };
 
   try {
-    const { error } = await supabaseClient
-      .from(PRODUCTS_TABLE)
-      .update({ discord: null })
-      .not('id', 'is', null); // matches all rows
-
+    const { error } = await supabaseClient.from('store_settings').upsert([payload]);
     if (error) throw error;
-
-    setStatusMessage(statusEl, "✅ تم حذف روابط ديسكورد من جميع المنتجات بنجاح.", 'success');
-    document.getElementById('global-discord-input').value = '';
-    await fetchAndRenderProducts();
+    showToast('✅ تم تحديث إعدادات المتجر بنجاح!');
   } catch (err) {
-    console.error("Error clearing global discord:", err);
-    setStatusMessage(statusEl, "❌ حدث خطأ أثناء الحذف: " + err.message, 'error');
+    showToast('❌ حدث خطأ أثناء الحفظ: ' + err.message, 'error');
   } finally {
-    btn.innerHTML = originalHTML;
+    btn.innerHTML = '💾 حفظ التغييرات';
     btn.disabled = false;
   }
-}
+});
 
-function setStatusMessage(element, message, type) {
-  element.textContent = message;
-  element.className = 'controller-status' + (type ? ' ' + type : '');
-}
 
-/* =========================================================================
-   🎛️ STATIC EVENT LISTENERS
-========================================================================= */
-function bindStaticEventListeners() {
-  const refreshBtn = document.getElementById('btn-refresh');
-  const logoutBtn = document.getElementById('btn-logout');
-  const searchInput = document.getElementById('table-search-input');
-  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-  const sidebar = document.getElementById('sidebar');
-
-  if (refreshBtn) {
-    refreshBtn.addEventListener('click', () => fetchAndRenderProducts());
-  }
-
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', handleLogout);
-  }
-
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => filterProductsTable(e.target.value));
-  }
-
-  if (mobileMenuBtn && sidebar) {
-    mobileMenuBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
-    });
-  }
-
-  // Prevent native form submission (Enter key inside inputs)
-  const form = document.getElementById('editProductForm');
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      _handleEditModalSave();
-    });
-  }
-}
-
-/* =========================================================================
-   🔗 EVENT DELEGATION (FROZEN BUTTONS FIX)
-   All modal + dynamic table interactions are routed through document-level
-   delegation, ensuring dynamically injected elements always stay responsive.
-========================================================================= */
-function bindGlobalDelegatedEvents() {
-
-  document.addEventListener('click', (event) => {
-
-    // ---------- Global Discord Controller ----------
-    if (event.target.closest('#btn-apply-global-discord')) {
-      applyGlobalDiscordToAll();
-      return;
-    }
-
-    if (event.target.closest('#btn-clear-global-discord')) {
-      clearGlobalDiscordFromAll();
-      return;
-    }
-
-    // ---------- Add Product ----------
-    if (event.target.closest('#btn-add-product')) {
-      openAddProductModal();
-      return;
-    }
-
-    // ---------- Table Row Actions (Edit / Delete) ----------
-    const editTrigger = event.target.closest('[data-action="edit-product"]');
-    if (editTrigger) {
-      const id = editTrigger.getAttribute('data-id');
-      openEditModal(id);
-      return;
-    }
-
-    const deleteTrigger = event.target.closest('[data-action="delete-product"]');
-    if (deleteTrigger) {
-      const id = deleteTrigger.getAttribute('data-id');
-      deleteProduct(id);
-      return;
-    }
-
-    // ---------- Modal Controls ----------
-    if (event.target.closest('#editModalCloseBtn')) {
-      closeEditModal();
-      return;
-    }
-
-    if (event.target.closest('#editModalCancelBtn')) {
-      closeEditModal();
-      return;
-    }
-
-    if (event.target.closest('#editModalSaveBtn')) {
-      _handleEditModalSave();
-      return;
-    }
-
-    if (event.target.closest('#editAddVariationBtn')) {
-      addVariationField();
-      return;
-    }
-
-    // ---------- Remove a Variation Row ----------
-    const removeVariationTrigger = event.target.closest('[data-action="remove-variation"]');
-    if (removeVariationTrigger) {
-      const index = removeVariationTrigger.getAttribute('data-index');
-      removeVariationField(index);
-      return;
-    }
-
-    // ---------- Click Outside Modal (on overlay) closes it ----------
-    if (event.target.id === 'editProductModalOverlay') {
-      closeEditModal();
-      return;
-    }
-  });
-
-  // ---------- Live Price Preview (input delegation) ----------
-  document.addEventListener('input', (event) => {
-    if (
-      event.target.id === 'edit-cost' ||
-      event.target.id === 'edit-sellingPrice' ||
-      event.target.id === 'edit-discountedPrice'
-    ) {
-      updatePricePreview();
-    }
-  });
-
-  // ---------- Escape key closes modal ----------
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      const overlay = document.getElementById('editProductModalOverlay');
-      if (overlay && overlay.style.display === 'flex') {
-        closeEditModal();
+/* ══════════════════════════════════════════════════════════════════════════
+   ⑧ EVENT DELEGATION (Fix Frozen UI Elements)
+   ══════════════════════════════════════════════════════════════════════════ */
+document.addEventListener('click', async (e) => {
+  
+  // Delete Product
+  if (e.target.closest('.delete-product-btn')) {
+    const id = e.target.closest('.delete-product-btn').dataset.id;
+    if (confirm('⚠️ هل أنت متأكد أنك تريد حذف هذا المنتج نهائياً؟')) {
+      const { error } = await supabaseClient.from('products').delete().eq('id', id);
+      if (error) showToast('خطأ: ' + error.message, 'error');
+      else {
+        showToast('تم حذف المنتج.');
+        loadProducts();
       }
     }
-  });
-}
+  }
 
-/* =========================================================================
-   🧰 UTILITIES
-========================================================================= */
-function escapeHTML(value) {
-  if (value === null || value === undefined) return '';
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
+  // Edit Product
+  if (e.target.closest('.edit-product-btn')) {
+    const id = e.target.closest('.edit-product-btn').dataset.id;
+    openProductModal(id);
+  }
 
-function escapeAttr(value) {
-  return escapeHTML(value);
-}
+  // Delete Promo
+  if (e.target.closest('.delete-promo-btn')) {
+    const id = e.target.closest('.delete-promo-btn').dataset.id;
+    if (confirm('⚠️ هل أنت متأكد أنك تريد حذف هذا الكوبون؟')) {
+      const { error } = await supabaseClient.from('promo_codes').delete().eq('id', id);
+      if (error) showToast('خطأ: ' + error.message, 'error');
+      else {
+        showToast('تم حذف الكوبون.');
+        loadPromos();
+      }
+    }
+  }
+
+  // Edit Promo
+  if (e.target.closest('.edit-promo-btn')) {
+    const id = e.target.closest('.edit-promo-btn').dataset.id;
+    openPromoModal(id);
+  }
+
+  // Delete Variation inside Product Modal
+  if (e.target.closest('.delete-var-btn')) {
+    const varId = e.target.closest('[data-var-id]').dataset.varId;
+    currentVariations = currentVariations.filter(v => v.id !== varId);
+    renderModalVariations();
+  }
+});
+
+// Update Variations array on Input change (Delegation)
+document.addEventListener('input', (e) => {
+  if (e.target.classList.contains('var-name')) {
+    const id = e.target.closest('[data-var-id]').dataset.varId;
+    const v = currentVariations.find(x => x.id === id);
+    if (v) v.name = e.target.value;
+  }
+  if (e.target.classList.contains('var-price')) {
+    const id = e.target.closest('[data-var-id]').dataset.varId;
+    const v = currentVariations.find(x => x.id === id);
+    if (v) v.price = parseFloat(e.target.value) || 0;
+  }
+});
+
+document.addEventListener('change', (e) => {
+  if (e.target.classList.contains('var-avail')) {
+    const id = e.target.closest('[data-var-id]').dataset.varId;
+    const v = currentVariations.find(x => x.id === id);
+    if (v) v.is_available = e.target.checked;
+  }
+});
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ⑨ INITIALIZATION
+   ══════════════════════════════════════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', () => {
+  loadProducts();
+  loadPromos();
+  loadStoreSettings();
+});
