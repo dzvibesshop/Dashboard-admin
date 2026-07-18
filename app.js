@@ -1,19 +1,21 @@
 /* app.js */
 
-/* ══════════════════════════════════════════════════════════════════════════
-   ① SECURITY GATEWAY
-   ══════════════════════════════════════════════════════════════════════════ */
+/* =========================================
+   🔒 SECURITY GATEWAY
+   ========================================= */
 const SECRET_PIN = "Dz.Vibes.0107@";
 
 if (localStorage.getItem('admin_authenticated') !== 'true') {
-  const userPin = prompt("🔒 يرجى إدخال الرمز السري للوحة التحكم:");
-  if (userPin === SECRET_PIN) {
-    localStorage.setItem('admin_authenticated', 'true');
-  } else {
-    alert("❌ رمز خاطئ! وصول مرفوض.");
-    window.location.href = "https://google.com";
-    throw new Error("Access Denied"); // Stop execution
-  }
+    const userPin = prompt("🔒 يرجى إدخال الرمز السري للوحة التحكم:");
+    
+    // استخدام .trim() للتخلص من أي مسافات زائدة قد يضيفها المتصفح بالخطأ
+    if (userPin !== null && userPin.trim() === SECRET_PIN) {
+        localStorage.setItem('admin_authenticated', 'true');
+        alert("✅ تم تسجيل الدخول بنجاح!");
+    } else {
+        alert("❌ رمز خاطئ! وصول مرفوض");
+        // هنا نحينا التوجيه لجوجل، الكود سيتوقف ولن يفتح لوحة التحكم
+    }
 }
 
 document.getElementById('logout-btn').addEventListener('click', () => {
