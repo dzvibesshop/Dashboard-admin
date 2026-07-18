@@ -68,13 +68,9 @@
       --shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html:not(.admin-authenticated) body {
-      display: none !important;
-    }
+    html:not(.admin-authenticated) body { display: none !important; }
 
     html {
       color-scheme: dark;
@@ -94,30 +90,12 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    body.modal-open {
-      overflow: hidden;
-    }
+    body.modal-open { overflow: hidden; }
 
-    button,
-    input,
-    textarea,
-    select {
-      font: inherit;
-    }
-
-    button,
-    a {
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    button {
-      color: inherit;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    button, input, textarea, select { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { color: inherit; }
+    a { color: inherit; text-decoration: none; }
 
     .sr-only {
       position: absolute;
@@ -131,9 +109,7 @@
       border: 0;
     }
 
-    .app-shell {
-      min-height: 100vh;
-    }
+    .app-shell { min-height: 100vh; }
 
     .sidebar {
       position: fixed;
@@ -190,10 +166,7 @@
       letter-spacing: 0.8px;
     }
 
-    .sidebar-nav {
-      flex: 1;
-      padding: 26px 14px;
-    }
+    .sidebar-nav { flex: 1; padding: 26px 14px; }
 
     .nav-label {
       margin: 0 10px 12px;
@@ -220,16 +193,8 @@
       transition: color 180ms ease, background 180ms ease, border-color 180ms ease, transform 180ms ease;
     }
 
-    .nav-button svg {
-      width: 19px;
-      height: 19px;
-      flex: 0 0 auto;
-    }
-
-    .nav-button span {
-      font-size: 13px;
-      font-weight: 700;
-    }
+    .nav-button svg { width: 19px; height: 19px; flex: 0 0 auto; }
+    .nav-button span { font-size: 13px; font-weight: 700; }
 
     .nav-button:hover {
       color: var(--text);
@@ -337,11 +302,7 @@
       gap: 12px;
     }
 
-    .topbar-title {
-      margin: 0;
-      font-size: 15px;
-      font-weight: 800;
-    }
+    .topbar-title { margin: 0; font-size: 15px; font-weight: 800; }
 
     .topbar-kicker {
       display: block;
@@ -387,9 +348,7 @@
       padding: 40px clamp(20px, 4vw, 52px) 72px;
     }
 
-    .workspace-panel {
-      display: none;
-    }
+    .workspace-panel { display: none; }
 
     .workspace-panel.active {
       display: block;
@@ -397,14 +356,8 @@
     }
 
     @keyframes panel-enter {
-      from {
-        opacity: 0;
-        transform: translateY(7px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(7px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .page-heading {
@@ -445,14 +398,8 @@
       transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, opacity 160ms ease;
     }
 
-    .button:hover:not(:disabled) {
-      transform: translateY(-1px);
-    }
-
-    .button:disabled {
-      opacity: 0.52;
-      cursor: wait;
-    }
+    .button:hover:not(:disabled) { transform: translateY(-1px); }
+    .button:disabled { opacity: 0.52; cursor: wait; }
 
     .button-primary {
       background: var(--accent);
@@ -512,16 +459,8 @@
       border-left: 1px solid var(--border);
     }
 
-    .metric:last-child {
-      border-left: 0;
-    }
-
-    .metric-label {
-      display: block;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 700;
-    }
+    .metric:last-child { border-left: 0; }
+    .metric-label { display: block; color: var(--muted); font-size: 11px; font-weight: 700; }
 
     .metric-value {
       display: block;
@@ -533,9 +472,7 @@
       text-align: right;
     }
 
-    .metric-value.accent {
-      color: var(--accent);
-    }
+    .metric-value.accent { color: var(--accent); }
 
     .toolbar {
       display: flex;
@@ -582,15 +519,8 @@
       transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
     }
 
-    .search-field input {
-      padding: 10px 43px 10px 14px;
-    }
-
-    .toolbar select {
-      width: 190px;
-      padding: 9px 12px;
-      color: var(--muted);
-    }
+    .search-field input { padding: 10px 43px 10px 14px; }
+    .toolbar select { width: 190px; padding: 9px 12px; color: var(--muted); }
 
     .search-field input:focus,
     .toolbar select:focus,
@@ -607,13 +537,11 @@
       overflow: hidden;
     }
 
-    .table-scroll {
-      overflow-x: auto;
-    }
+    .table-scroll { overflow-x: auto; }
 
     .data-table {
       width: 100%;
-      min-width: 920px;
+      min-width: 980px;   /* زدنا قليلاً لعمود الحالة الجديد */
       border-collapse: collapse;
       text-align: right;
     }
@@ -637,17 +565,71 @@
       vertical-align: middle;
     }
 
-    .data-table tbody tr {
-      transition: background 150ms ease;
+    .data-table tbody tr { transition: background 150ms ease; }
+    .data-table tbody tr:hover { background: rgba(255, 255, 255, 0.018); }
+    .data-table tbody tr:last-child td { border-bottom: 0; }
+
+    /* ══════════════════════════════════════════════════════════
+       ✅ ستايل صفوف المنتجات غير المتوفرة
+       ══════════════════════════════════════════════════════════ */
+    .data-table tbody tr.row-unavailable {
+      background: rgba(255, 89, 104, 0.03);
+      opacity: 0.72;
     }
 
-    .data-table tbody tr:hover {
-      background: rgba(255, 255, 255, 0.018);
+    .data-table tbody tr.row-unavailable:hover {
+      background: rgba(255, 89, 104, 0.06);
+      opacity: 1;
     }
 
-    .data-table tbody tr:last-child td {
-      border-bottom: 0;
+    /* خط مائل خفيف على الصورة عند عدم التوفر */
+    .data-table tbody tr.row-unavailable .product-thumb {
+      filter: grayscale(55%) brightness(0.7);
     }
+
+    /* نص باهت للمنتج الموقوف */
+    .data-table tbody tr.row-unavailable .product-cell strong {
+      color: var(--muted);
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       ✅ شارات الحالة (Badge) للمنتجات
+       ══════════════════════════════════════════════════════════ */
+    .availability-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    /* متوفر — أخضر */
+    .availability-badge.badge-available {
+      background: var(--green-soft);
+      color: #5ddba8;
+      border: 1px solid rgba(53, 201, 138, 0.22);
+    }
+
+    /* موقوف — رمادي/أحمر داكن */
+    .availability-badge.badge-unavailable {
+      background: rgba(255, 89, 104, 0.09);
+      color: #ff8995;
+      border: 1px solid rgba(255, 89, 104, 0.2);
+    }
+
+    .availability-badge .badge-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════════ */
 
     .product-cell {
       display: flex;
@@ -664,6 +646,7 @@
       border-radius: 9px;
       object-fit: cover;
       background: var(--surface-3);
+      transition: filter 200ms ease;
     }
 
     .product-thumb-fallback {
@@ -767,11 +750,7 @@
       background: rgba(255, 89, 104, 0.08);
     }
 
-    .row-action svg {
-      width: 16px;
-      height: 16px;
-      pointer-events: none;
-    }
+    .row-action svg { width: 16px; height: 16px; pointer-events: none; }
 
     .toggle {
       position: relative;
@@ -818,10 +797,7 @@
       box-shadow: 0 0 10px rgba(255, 61, 79, 0.38);
     }
 
-    .toggle:disabled {
-      opacity: 0.5;
-      cursor: wait;
-    }
+    .toggle:disabled { opacity: 0.5; cursor: wait; }
 
     .empty-state,
     .error-state {
@@ -831,9 +807,7 @@
     }
 
     .empty-state.show,
-    .error-state.show {
-      display: block;
-    }
+    .error-state.show { display: block; }
 
     .empty-state svg,
     .error-state svg {
@@ -844,21 +818,12 @@
     }
 
     .empty-state h3,
-    .error-state h3 {
-      margin: 0 0 8px;
-      font-size: 15px;
-    }
+    .error-state h3 { margin: 0 0 8px; font-size: 15px; }
 
     .empty-state p,
-    .error-state p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 11px;
-    }
+    .error-state p { margin: 0; color: var(--muted); font-size: 11px; }
 
-    .loading-rows td {
-      height: 78px;
-    }
+    .loading-rows td { height: 78px; }
 
     .shimmer {
       position: relative;
@@ -876,16 +841,9 @@
       animation: shimmer 1.4s infinite;
     }
 
-    @keyframes shimmer {
-      to {
-        transform: translateX(-100%);
-      }
-    }
+    @keyframes shimmer { to { transform: translateX(-100%); } }
 
-    .shimmer-line {
-      width: 120px;
-      height: 10px;
-    }
+    .shimmer-line { width: 120px; height: 10px; }
 
     .promo-code {
       color: #fff;
@@ -916,9 +874,7 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .settings-section:last-child {
-      border-bottom: 0;
-    }
+    .settings-section:last-child { border-bottom: 0; }
 
     .settings-section-header {
       display: flex;
@@ -928,19 +884,10 @@
     }
 
     .settings-section h2,
-    .settings-aside h2 {
-      margin: 0;
-      font-size: 14px;
-      font-weight: 800;
-    }
+    .settings-aside h2 { margin: 0; font-size: 14px; font-weight: 800; }
 
     .settings-section p,
-    .settings-aside p {
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.8;
-    }
+    .settings-aside p { margin: 6px 0 0; color: var(--muted); font-size: 11px; line-height: 1.8; }
 
     .store-state-control {
       min-width: 165px;
@@ -954,17 +901,8 @@
       background: var(--surface-2);
     }
 
-    .store-state-control strong {
-      display: block;
-      font-size: 11px;
-    }
-
-    .store-state-control span {
-      display: block;
-      margin-top: 3px;
-      color: var(--muted-2);
-      font-size: 9px;
-    }
+    .store-state-control strong { display: block; font-size: 11px; }
+    .store-state-control span { display: block; margin-top: 3px; color: var(--muted-2); font-size: 9px; }
 
     .settings-grid {
       display: grid;
@@ -973,9 +911,7 @@
       margin-top: 22px;
     }
 
-    .field-group.full {
-      grid-column: 1 / -1;
-    }
+    .field-group.full { grid-column: 1 / -1; }
 
     .field-group label {
       display: flex;
@@ -988,15 +924,9 @@
       font-weight: 700;
     }
 
-    .field-group label small {
-      color: var(--muted-2);
-      font-size: 9px;
-      font-weight: 600;
-    }
+    .field-group label small { color: var(--muted-2); font-size: 9px; font-weight: 600; }
 
-    .form-control {
-      padding: 10px 12px;
-    }
+    .form-control { padding: 10px 12px; }
 
     textarea.form-control {
       min-height: 106px;
@@ -1004,13 +934,7 @@
       line-height: 1.7;
     }
 
-    .field-hint {
-      display: block;
-      margin-top: 7px;
-      color: var(--muted-2);
-      font-size: 9px;
-      line-height: 1.7;
-    }
+    .field-hint { display: block; margin-top: 7px; color: var(--muted-2); font-size: 9px; line-height: 1.7; }
 
     .settings-actions {
       display: flex;
@@ -1076,10 +1000,7 @@
       transition: opacity 190ms ease, visibility 190ms ease;
     }
 
-    .modal-overlay.show {
-      opacity: 1;
-      visibility: visible;
-    }
+    .modal-overlay.show { opacity: 1; visibility: visible; }
 
     .modal {
       width: min(720px, 100%);
@@ -1095,14 +1016,8 @@
       transition: opacity 210ms ease, transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .modal-overlay.show .modal {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
-    .modal.modal-small {
-      width: min(450px, 100%);
-    }
+    .modal-overlay.show .modal { opacity: 1; transform: translateY(0) scale(1); }
+    .modal.modal-small { width: min(450px, 100%); }
 
     .modal-header {
       display: flex;
@@ -1113,17 +1028,8 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .modal-header h2 {
-      margin: 0;
-      font-size: 16px;
-      font-weight: 800;
-    }
-
-    .modal-header p {
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: 10px;
-    }
+    .modal-header h2 { margin: 0; font-size: 16px; font-weight: 800; }
+    .modal-header p { margin: 4px 0 0; color: var(--muted); font-size: 10px; }
 
     .modal-close {
       width: 36px;
@@ -1145,10 +1051,7 @@
       background: var(--accent-soft);
     }
 
-    .modal-body {
-      padding: 22px;
-      overflow-y: auto;
-    }
+    .modal-body { padding: 22px; overflow-y: auto; }
 
     .modal-footer {
       display: flex;
@@ -1203,25 +1106,17 @@
       background: var(--surface);
     }
 
-    .switch-field.full {
-      grid-column: 1 / -1;
+    /* ✅ تمييز بصري لحقل is_available في الـ Modal عند الإيقاف */
+    .switch-field.availability-field-off {
+      border-color: rgba(255, 89, 104, 0.25);
+      background: rgba(255, 89, 104, 0.05);
     }
 
-    .switch-field strong {
-      display: block;
-      font-size: 11px;
-    }
+    .switch-field.full { grid-column: 1 / -1; }
+    .switch-field strong { display: block; font-size: 11px; }
+    .switch-field span { display: block; margin-top: 3px; color: var(--muted-2); font-size: 9px; }
 
-    .switch-field span {
-      display: block;
-      margin-top: 3px;
-      color: var(--muted-2);
-      font-size: 9px;
-    }
-
-    .variation-section {
-      grid-column: 1 / -1;
-    }
+    .variation-section { grid-column: 1 / -1; }
 
     .variation-heading {
       display: flex;
@@ -1231,11 +1126,7 @@
       margin-bottom: 12px;
     }
 
-    .variation-heading p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 10px;
-    }
+    .variation-heading p { margin: 0; color: var(--muted); font-size: 10px; }
 
     .variation-list {
       display: flex;
@@ -1256,15 +1147,10 @@
     }
 
     @keyframes variation-enter {
-      from {
-        opacity: 0;
-        transform: translateY(-5px);
-      }
+      from { opacity: 0; transform: translateY(-5px); }
     }
 
-    .variation-row .form-control {
-      min-height: 38px;
-    }
+    .variation-row .form-control { min-height: 38px; }
 
     .variation-availability {
       display: flex;
@@ -1292,9 +1178,7 @@
       line-height: 1.9;
     }
 
-    .confirm-copy strong {
-      color: #fff;
-    }
+    .confirm-copy strong { color: #fff; }
 
     .toast-region {
       position: fixed;
@@ -1325,13 +1209,8 @@
       animation: toast-in 220ms ease forwards;
     }
 
-    .toast.success {
-      border-color: rgba(53, 201, 138, 0.28);
-    }
-
-    .toast.error {
-      border-color: rgba(255, 89, 104, 0.3);
-    }
+    .toast.success { border-color: rgba(53, 201, 138, 0.28); }
+    .toast.error   { border-color: rgba(255, 89, 104, 0.3); }
 
     .toast::before {
       content: "";
@@ -1353,23 +1232,11 @@
       box-shadow: 0 0 0 4px rgba(255, 89, 104, 0.12);
     }
 
-    @keyframes toast-in {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+    @keyframes toast-in { to { opacity: 1; transform: translateY(0); } }
 
-    .toast.leaving {
-      animation: toast-out 180ms ease forwards;
-    }
+    .toast.leaving { animation: toast-out 180ms ease forwards; }
 
-    @keyframes toast-out {
-      to {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-    }
+    @keyframes toast-out { to { opacity: 0; transform: translateY(8px); } }
 
     .sidebar-backdrop {
       position: fixed;
@@ -1382,155 +1249,53 @@
     }
 
     @media (max-width: 1100px) {
-      .overview-band {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .metric:nth-child(2) {
-        border-left: 0;
-      }
-
-      .metric:nth-child(-n + 2) {
-        border-bottom: 1px solid var(--border);
-      }
-
-      .settings-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .settings-aside {
-        position: static;
-      }
+      .overview-band { grid-template-columns: repeat(2, 1fr); }
+      .metric:nth-child(2) { border-left: 0; }
+      .metric:nth-child(-n + 2) { border-bottom: 1px solid var(--border); }
+      .settings-layout { grid-template-columns: 1fr; }
+      .settings-aside { position: static; }
     }
 
     @media (max-width: 860px) {
-      .sidebar {
-        transform: translateX(100%);
-      }
-
-      body.sidebar-open .sidebar {
-        transform: translateX(0);
-      }
-
-      .sidebar-backdrop {
-        display: block;
-        pointer-events: none;
-      }
-
-      body.sidebar-open .sidebar-backdrop {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .main-area {
-        margin-right: 0;
-      }
-
-      .mobile-menu-button {
-        display: grid;
-      }
-
-      .content {
-        padding-top: 30px;
-      }
+      .sidebar { transform: translateX(100%); }
+      body.sidebar-open .sidebar { transform: translateX(0); }
+      .sidebar-backdrop { display: block; pointer-events: none; }
+      body.sidebar-open .sidebar-backdrop { opacity: 1; pointer-events: auto; }
+      .main-area { margin-right: 0; }
+      .mobile-menu-button { display: grid; }
+      .content { padding-top: 30px; }
     }
 
     @media (max-width: 640px) {
-      .topbar {
-        padding: 12px 16px;
-      }
-
+      .topbar { padding: 12px 16px; }
       .topbar-kicker,
-      .topbar-actions .button span {
-        display: none;
-      }
-
-      .topbar-actions .button {
-        min-width: 42px;
-        padding: 9px;
-      }
-
-      .content {
-        padding: 26px 16px 55px;
-      }
-
-      .page-heading {
-        align-items: stretch;
-        flex-direction: column;
-      }
-
-      .page-heading .button {
-        width: 100%;
-      }
-
-      .overview-band {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .metric {
-        min-height: 92px;
-        padding: 18px;
-      }
-
-      .metric-value {
-        font-size: 23px;
-      }
-
+      .topbar-actions .button span { display: none; }
+      .topbar-actions .button { min-width: 42px; padding: 9px; }
+      .content { padding: 26px 16px 55px; }
+      .page-heading { align-items: stretch; flex-direction: column; }
+      .page-heading .button { width: 100%; }
+      .overview-band { grid-template-columns: 1fr 1fr; }
+      .metric { min-height: 92px; padding: 18px; }
+      .metric-value { font-size: 23px; }
       .toolbar,
-      .toolbar-filters {
-        align-items: stretch;
-        flex-direction: column;
-      }
-
+      .toolbar-filters { align-items: stretch; flex-direction: column; }
       .search-field,
-      .toolbar select {
-        width: 100%;
-      }
-
-      .settings-section-header {
-        flex-direction: column;
-      }
-
-      .store-state-control {
-        width: 100%;
-      }
-
+      .toolbar select { width: 100%; }
+      .settings-section-header { flex-direction: column; }
+      .store-state-control { width: 100%; }
       .settings-grid,
       .form-grid,
-      .switch-fields {
-        grid-template-columns: 1fr;
-      }
-
-      .variation-row {
-        grid-template-columns: 1fr 105px 38px;
-      }
-
-      .variation-availability {
-        grid-column: 1 / -1;
-        justify-content: flex-start;
-      }
-
-      .modal-overlay {
-        align-items: flex-end;
-        padding: 0;
-      }
-
+      .switch-fields { grid-template-columns: 1fr; }
+      .variation-row { grid-template-columns: 1fr 105px 38px; }
+      .variation-availability { grid-column: 1 / -1; justify-content: flex-start; }
+      .modal-overlay { align-items: flex-end; padding: 0; }
       .modal,
-      .modal.modal-small {
-        width: 100%;
-        max-height: 94vh;
-        border-radius: 16px 16px 0 0;
-      }
-
-      .modal-footer {
-        padding-bottom: max(16px, env(safe-area-inset-bottom));
-      }
+      .modal.modal-small { width: 100%; max-height: 94vh; border-radius: 16px 16px 0 0; }
+      .modal-footer { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
+      *, *::before, *::after {
         scroll-behavior: auto !important;
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
@@ -1626,6 +1391,7 @@
       </header>
 
       <main class="content">
+        <!-- ══ لوحة المنتجات ══ -->
         <section class="workspace-panel active" id="panel-products" data-panel="products">
           <div class="page-heading">
             <div>
@@ -1640,6 +1406,7 @@
             </button>
           </div>
 
+          <!-- إحصائيات سريعة -->
           <div class="overview-band" aria-label="ملخص المنتجات">
             <div class="metric">
               <span class="metric-label">إجمالي المنتجات</span>
@@ -1659,6 +1426,7 @@
             </div>
           </div>
 
+          <!-- شريط الفلاتر -->
           <div class="toolbar">
             <div class="toolbar-filters">
               <label class="search-field">
@@ -1681,6 +1449,7 @@
             </div>
           </div>
 
+          <!-- جدول المنتجات -->
           <div class="data-surface">
             <div class="table-scroll" id="productsTableWrap">
               <table class="data-table">
@@ -1689,6 +1458,7 @@
                     <th>المنتج</th>
                     <th>القسم</th>
                     <th>السعر</th>
+                    <th>الحالة</th>       <!-- ✅ عمود الحالة الجديد -->
                     <th>التوفر</th>
                     <th>الأكثر مبيعاً</th>
                     <th>الباقات</th>
@@ -1717,6 +1487,7 @@
           </div>
         </section>
 
+        <!-- ══ لوحة الكوبونات ══ -->
         <section class="workspace-panel" id="panel-promos" data-panel="promos">
           <div class="page-heading">
             <div>
@@ -1777,6 +1548,7 @@
           </div>
         </section>
 
+        <!-- ══ لوحة الإعدادات ══ -->
         <section class="workspace-panel" id="panel-settings" data-panel="settings">
           <div class="page-heading">
             <div>
@@ -1850,6 +1622,7 @@
     </div>
   </div>
 
+  <!-- ══ Modal المنتج ══ -->
   <div class="modal-overlay" id="productModal" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
       <div class="modal-header">
@@ -1926,7 +1699,8 @@
             </div>
 
             <div class="switch-fields">
-              <div class="switch-field">
+              <!-- ✅ حقل is_available مع تمييز بصري تفاعلي -->
+              <div class="switch-field" id="availabilityField">
                 <div>
                   <strong>متوفر للطلب</strong>
                   <span>يرتبط بالعمود is_available</span>
@@ -1970,6 +1744,7 @@
     </div>
   </div>
 
+  <!-- ══ Modal الكوبونات ══ -->
   <div class="modal-overlay" id="promoModal" aria-hidden="true">
     <div class="modal modal-small" role="dialog" aria-modal="true" aria-labelledby="promoModalTitle">
       <div class="modal-header">
@@ -2016,6 +1791,7 @@
     </div>
   </div>
 
+  <!-- ══ Modal التأكيد ══ -->
   <div class="modal-overlay" id="confirmModal" aria-hidden="true">
     <div class="modal modal-small" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmMessage">
       <div class="modal-header">
@@ -2044,119 +1820,120 @@
   <script>
     "use strict";
 
-    const SUPABASE_URL = "https://kbyjyfmifsufxbmhnwnq.supabase.co";
+    /* ══════════════════════════════════════════════════════════════════
+       CONFIG & CONSTANTS
+       ══════════════════════════════════════════════════════════════════ */
+    const SUPABASE_URL      = "https://kbyjyfmifsufxbmhnwnq.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_xZPIAOb59rGWmUvnI__Pyw_ijtSFRwo";
-    const SETTINGS_TABLE = "store_settings";
-    const SETTINGS_ROW_ID = 1;
+    const SETTINGS_TABLE    = "store_settings";
+    const SETTINGS_ROW_ID   = 1;
 
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      auth: {
-        persistSession: false,
-        autoRefreshToken: false
-      }
+      auth: { persistSession: false, autoRefreshToken: false }
     });
 
-    const PRODUCT_COLUMNS = "id,title,category,image_url,price,description,is_available,is_hot,discord_link,variations";
-    const PROMO_COLUMNS = "code,discount_percent,is_active";
+    // ✅ is_available مضمون في PRODUCT_COLUMNS
+    const PRODUCT_COLUMNS  = "id,title,category,image_url,price,description,is_available,is_hot,discord_link,variations";
+    const PROMO_COLUMNS    = "code,discount_percent,is_active";
     const SETTINGS_COLUMNS = "id,is_active,telegram_link,discord_link,announcement_text";
 
     const CATEGORY_LABELS = {
-      subscriptions: "اشتراكات رقمية",
-      sub_digital_keys: "اشتراكات - Digital Key",
-      sub_netflix: "اشتراكات - Netflix",
-      sub_spotify: "اشتراكات - Spotify",
-      sub_shahid: "اشتراكات - Shahid",
-      sub_crunchyroll: "اشتراكات - Crunchyroll",
-      sub_other: "اشتراكات - أخرى",
-      mobile: "شحن ألعاب الهاتف",
+      subscriptions:       "اشتراكات رقمية",
+      sub_digital_keys:    "اشتراكات - Digital Key",
+      sub_netflix:         "اشتراكات - Netflix",
+      sub_spotify:         "اشتراكات - Spotify",
+      sub_shahid:          "اشتراكات - Shahid",
+      sub_crunchyroll:     "اشتراكات - Crunchyroll",
+      sub_other:           "اشتراكات - أخرى",
+      mobile:              "شحن ألعاب الهاتف",
       mobile_digital_keys: "الهاتف - Digital Key",
-      mobile_uid: "الهاتف - شحن UID",
-      mobile_card: "الهاتف - شحن Card",
-      playstation: "بلاي ستايشن",
-      psn_digital_keys: "بلاي ستايشن - Digital Key",
-      psn_games: "بلاي ستايشن - ألعاب",
-      psn_gift_cards: "بلاي ستايشن - Gift Card",
-      xbox: "إكس بوكس",
-      xbox_digital_keys: "إكس بوكس - Digital Key",
-      xbox_games: "إكس بوكس - ألعاب",
-      xbox_gift_cards: "إكس بوكس - Gift Card",
-      xbox_game_pass: "إكس بوكس - Game Pass",
-      pc: "ألعاب وحسابات PC",
-      pc_digital_keys: "PC - Digital Key",
-      pc_shared_accounts: "PC - حسابات مشتركة",
-      pc_online_accounts: "PC - حسابات Online",
+      mobile_uid:          "الهاتف - شحن UID",
+      mobile_card:         "الهاتف - شحن Card",
+      playstation:         "بلاي ستايشن",
+      psn_digital_keys:    "بلاي ستايشن - Digital Key",
+      psn_games:           "بلاي ستايشن - ألعاب",
+      psn_gift_cards:      "بلاي ستايشن - Gift Card",
+      xbox:                "إكس بوكس",
+      xbox_digital_keys:   "إكس بوكس - Digital Key",
+      xbox_games:          "إكس بوكس - ألعاب",
+      xbox_gift_cards:     "إكس بوكس - Gift Card",
+      xbox_game_pass:      "إكس بوكس - Game Pass",
+      pc:                  "ألعاب وحسابات PC",
+      pc_digital_keys:     "PC - Digital Key",
+      pc_shared_accounts:  "PC - حسابات مشتركة",
+      pc_online_accounts:  "PC - حسابات Online",
       pc_offline_accounts: "PC - حسابات Offline",
-      pc_gift_cards: "PC - Gift Card"
+      pc_gift_cards:       "PC - Gift Card"
     };
 
     const VIEW_META = {
-      products: {
-        title: "إدارة المنتجات",
-        kicker: "مزامنة مباشرة مع جدول products"
-      },
-      promos: {
-        title: "كوبونات الخصم",
-        kicker: "إدارة جدول promo_codes"
-      },
-      settings: {
-        title: "إعدادات المتجر",
-        kicker: "حالة المتجر وقنوات التواصل"
-      }
+      products: { title: "إدارة المنتجات",    kicker: "مزامنة مباشرة مع جدول products"      },
+      promos:   { title: "كوبونات الخصم",      kicker: "إدارة جدول promo_codes"               },
+      settings: { title: "إعدادات المتجر",     kicker: "حالة المتجر وقنوات التواصل"           }
     };
 
+    /* ══════════════════════════════════════════════════════════════════
+       STATE
+       ══════════════════════════════════════════════════════════════════ */
     const state = {
-      activeView: "products",
-      products: [],
-      promos: [],
+      activeView:         "products",
+      products:           [],
+      promos:             [],
       settings: {
-        id: SETTINGS_ROW_ID,
-        is_active: true,
-        telegram_link: "",
-        discord_link: "",
+        id:                SETTINGS_ROW_ID,
+        is_active:         true,
+        telegram_link:     "",
+        discord_link:      "",
         announcement_text: ""
       },
-      productSearch: "",
-      productFilter: "all",
-      promoSearch: "",
-      editingProductId: null,
-      editingPromoCode: null,
-      draftVariations: [],
+      productSearch:      "",
+      productFilter:      "all",
+      promoSearch:        "",
+      editingProductId:   null,
+      editingPromoCode:   null,
+      draftVariations:    [],
       pendingConfirmation: null,
-      successfulRequests: 0,
-      failedRequests: 0
+      successfulRequests:  0,
+      failedRequests:      0
     };
 
+    /* ══════════════════════════════════════════════════════════════════
+       DOM REFERENCES
+       ══════════════════════════════════════════════════════════════════ */
     const elements = {
-      productsTableBody: document.getElementById("productsTableBody"),
-      productsTableWrap: document.getElementById("productsTableWrap"),
-      productsEmpty: document.getElementById("productsEmpty"),
-      productsError: document.getElementById("productsError"),
+      productsTableBody:    document.getElementById("productsTableBody"),
+      productsTableWrap:    document.getElementById("productsTableWrap"),
+      productsEmpty:        document.getElementById("productsEmpty"),
+      productsError:        document.getElementById("productsError"),
       productsErrorMessage: document.getElementById("productsErrorMessage"),
-      promosTableBody: document.getElementById("promosTableBody"),
-      promosTableWrap: document.getElementById("promosTableWrap"),
-      promosEmpty: document.getElementById("promosEmpty"),
-      promosError: document.getElementById("promosError"),
-      promosErrorMessage: document.getElementById("promosErrorMessage"),
-      variationsList: document.getElementById("variationsList"),
-      productModal: document.getElementById("productModal"),
-      promoModal: document.getElementById("promoModal"),
-      confirmModal: document.getElementById("confirmModal"),
-      toastRegion: document.getElementById("toastRegion"),
-      settingsForm: document.getElementById("settingsForm")
+      promosTableBody:      document.getElementById("promosTableBody"),
+      promosTableWrap:      document.getElementById("promosTableWrap"),
+      promosEmpty:          document.getElementById("promosEmpty"),
+      promosError:          document.getElementById("promosError"),
+      promosErrorMessage:   document.getElementById("promosErrorMessage"),
+      variationsList:       document.getElementById("variationsList"),
+      productModal:         document.getElementById("productModal"),
+      promoModal:           document.getElementById("promoModal"),
+      confirmModal:         document.getElementById("confirmModal"),
+      toastRegion:          document.getElementById("toastRegion"),
+      settingsForm:         document.getElementById("settingsForm")
     };
 
+    /* ══════════════════════════════════════════════════════════════════
+       HELPERS
+       ══════════════════════════════════════════════════════════════════ */
     function escapeHtml(value) {
       return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(/&/g,  "&amp;")
+        .replace(/</g,  "&lt;")
+        .replace(/>/g,  "&gt;")
+        .replace(/"/g,  "&quot;")
+        .replace(/'/g,  "&#039;");
     }
 
     function toBoolean(value, fallback = false) {
       if (typeof value === "boolean") return value;
-      if (value === "true" || value === 1 || value === "1") return true;
+      if (value === "true"  || value === 1 || value === "1") return true;
       if (value === "false" || value === 0 || value === "0") return false;
       return fallback;
     }
@@ -2175,65 +1952,63 @@
 
     function normalizeVariations(rawVariations) {
       let variations = rawVariations;
-
       if (typeof variations === "string") {
-        try {
-          variations = JSON.parse(variations);
-        } catch (error) {
-          console.warn("تعذر تحليل variations:", error);
-          return [];
-        }
+        try { variations = JSON.parse(variations); }
+        catch (error) { console.warn("تعذر تحليل variations:", error); return []; }
       }
-
       if (!Array.isArray(variations)) return [];
-
       return variations
-        .map((variation) => ({
-          id: String(variation?.id || generateLocalId()),
-          name: String(variation?.name || variation?.value || "").trim(),
-          price: toNumber(variation?.price, 0),
-          is_available: toBoolean(variation?.is_available, true)
+        .map((v) => ({
+          id:           String(v?.id || generateLocalId()),
+          name:         String(v?.name || v?.value || "").trim(),
+          price:        toNumber(v?.price, 0),
+          is_available: toBoolean(v?.is_available, true)
         }))
-        .filter((variation) => variation.name !== "");
+        .filter((v) => v.name !== "");
     }
 
+    /* ══════════════════════════════════════════════════════════════════
+       DATA MAPPERS
+       ══════════════════════════════════════════════════════════════════ */
     function mapProductRow(row) {
       return {
-        id: row.id,
-        title: String(row.title || ""),
-        category: String(row.category || ""),
-        image_url: String(row.image_url || ""),
-        price: toNumber(row.price, 0),
-        description: String(row.description || ""),
+        id:           row.id,
+        title:        String(row.title        || ""),
+        category:     String(row.category     || ""),
+        image_url:    String(row.image_url    || ""),
+        price:        toNumber(row.price, 0),
+        description:  String(row.description  || ""),
+        // ✅ قراءة is_available بدقة — false يبقى false
         is_available: toBoolean(row.is_available, true),
-        is_hot: toBoolean(row.is_hot, false),
+        is_hot:       toBoolean(row.is_hot,       false),
         discord_link: String(row.discord_link || ""),
-        variations: normalizeVariations(row.variations)
+        variations:   normalizeVariations(row.variations)
       };
     }
 
     function mapPromoRow(row) {
       return {
-        code: String(row.code || ""),
+        code:             String(row.code || ""),
         discount_percent: toNumber(row.discount_percent, 0),
-        is_active: toBoolean(row.is_active, true)
+        is_active:        toBoolean(row.is_active, true)
       };
     }
 
     function mapSettingsRow(row) {
       return {
-        id: row?.id ?? SETTINGS_ROW_ID,
-        is_active: toBoolean(row?.is_active, true),
-        telegram_link: String(row?.telegram_link || ""),
-        discord_link: String(row?.discord_link || ""),
+        id:                row?.id ?? SETTINGS_ROW_ID,
+        is_active:         toBoolean(row?.is_active, true),
+        telegram_link:     String(row?.telegram_link     || ""),
+        discord_link:      String(row?.discord_link      || ""),
         announcement_text: String(row?.announcement_text || "")
       };
     }
 
+    /* ══════════════════════════════════════════════════════════════════
+       UI UTILITIES
+       ══════════════════════════════════════════════════════════════════ */
     function formatPrice(value) {
-      return new Intl.NumberFormat("fr-DZ", {
-        maximumFractionDigits: 2
-      }).format(toNumber(value, 0));
+      return new Intl.NumberFormat("fr-DZ", { maximumFractionDigits: 2 }).format(toNumber(value, 0));
     }
 
     function setConnectionState(status, message) {
@@ -2241,7 +2016,7 @@
       const text = document.getElementById("connectionText");
       line.classList.remove("online", "error");
       if (status === "online") line.classList.add("online");
-      if (status === "error") line.classList.add("error");
+      if (status === "error")  line.classList.add("error");
       text.textContent = message;
     }
 
@@ -2267,7 +2042,6 @@
       toast.className = `toast ${type}`;
       toast.textContent = message;
       elements.toastRegion.appendChild(toast);
-
       window.setTimeout(() => {
         toast.classList.add("leaving");
         window.setTimeout(() => toast.remove(), 190);
@@ -2276,14 +2050,12 @@
 
     function setButtonBusy(button, isBusy, busyText = "جار الحفظ...") {
       if (!button) return;
-
       if (isBusy) {
         button.dataset.originalText = button.innerHTML;
         button.disabled = true;
         button.textContent = busyText;
         return;
       }
-
       button.disabled = false;
       if (button.dataset.originalText) {
         button.innerHTML = button.dataset.originalText;
@@ -2293,7 +2065,7 @@
 
     function setToggleState(toggle, input, enabled) {
       if (toggle) toggle.setAttribute("aria-checked", String(Boolean(enabled)));
-      if (input) input.value = String(Boolean(enabled));
+      if (input)  input.value = String(Boolean(enabled));
     }
 
     function showModal(modal) {
@@ -2318,6 +2090,9 @@
       document.querySelectorAll(".modal-overlay.show").forEach(closeModal);
     }
 
+    /* ══════════════════════════════════════════════════════════════════
+       NAVIGATION
+       ══════════════════════════════════════════════════════════════════ */
     function switchView(viewName) {
       if (!VIEW_META[viewName]) return;
       state.activeView = viewName;
@@ -2326,34 +2101,47 @@
         const isActive = button.dataset.view === viewName;
         button.classList.toggle("active", isActive);
         if (isActive) button.setAttribute("aria-current", "page");
-        else button.removeAttribute("aria-current");
+        else          button.removeAttribute("aria-current");
       });
 
       document.querySelectorAll("[data-panel]").forEach((panel) => {
         panel.classList.toggle("active", panel.dataset.panel === viewName);
       });
 
-      document.getElementById("topbarTitle").textContent = VIEW_META[viewName].title;
+      document.getElementById("topbarTitle").textContent  = VIEW_META[viewName].title;
       document.getElementById("topbarKicker").textContent = VIEW_META[viewName].kicker;
       document.getElementById("topbarAddProduct").style.display = viewName === "products" ? "inline-flex" : "none";
       document.body.classList.remove("sidebar-open");
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
+    /* ══════════════════════════════════════════════════════════════════
+       LOADING SKELETON
+       ══════════════════════════════════════════════════════════════════ */
     function buildLoadingRows(columnCount, rowCount = 5) {
       return Array.from({ length: rowCount }, () => `
         <tr class="loading-rows">
-          ${Array.from({ length: columnCount }, () => `<td><div class="shimmer shimmer-line"></div></td>`).join("")}
+          ${Array.from({ length: columnCount }, () =>
+            `<td><div class="shimmer shimmer-line"></div></td>`
+          ).join("")}
         </tr>
       `).join("");
     }
 
+    /* ══════════════════════════════════════════════════════════════════
+       DATA FETCHING
+       ══════════════════════════════════════════════════════════════════ */
+
+    /**
+     * ✅ fetchProducts — بدون أي فلترة على is_available
+     *    يجلب جميع المنتجات بغض النظر عن حالة التوفر
+     */
     async function fetchProducts() {
       const { data, error } = await supabaseClient
         .from("products")
         .select(PRODUCT_COLUMNS)
         .order("title", { ascending: true });
-
+      // لا يوجد .eq("is_available", true) هنا عمداً
       if (error) throw error;
       return (data || []).map(mapProductRow);
     }
@@ -2363,7 +2151,6 @@
         .from("promo_codes")
         .select(PROMO_COLUMNS)
         .order("code", { ascending: true });
-
       if (error) throw error;
       return (data || []).map(mapPromoRow);
     }
@@ -2374,11 +2161,13 @@
         .select(SETTINGS_COLUMNS)
         .eq("id", SETTINGS_ROW_ID)
         .maybeSingle();
-
       if (error) throw error;
       return mapSettingsRow(data);
     }
 
+    /* ══════════════════════════════════════════════════════════════════
+       LOAD CONTROLLERS
+       ══════════════════════════════════════════════════════════════════ */
     async function loadProducts(options = {}) {
       const showLoading = options.showLoading !== false;
 
@@ -2386,7 +2175,8 @@
         elements.productsTableWrap.style.display = "block";
         elements.productsEmpty.classList.remove("show");
         elements.productsError.classList.remove("show");
-        elements.productsTableBody.innerHTML = buildLoadingRows(7);
+        // 8 أعمدة الآن (أضفنا عمود الحالة)
+        elements.productsTableBody.innerHTML = buildLoadingRows(8);
       }
 
       try {
@@ -2432,7 +2222,7 @@
     }
 
     async function loadSettings(options = {}) {
-      const notify = options.notify === true;
+      const notify     = options.notify === true;
       const saveButton = document.getElementById("saveSettingsButton");
       if (notify) setButtonBusy(saveButton, true, "جار التحميل...");
 
@@ -2451,20 +2241,21 @@
       }
     }
 
+    /* ══════════════════════════════════════════════════════════════════
+       RENDER — PRODUCTS TABLE
+       ══════════════════════════════════════════════════════════════════ */
     function getFilteredProducts() {
       const term = state.productSearch.trim().toLocaleLowerCase("ar");
-
       return state.products.filter((product) => {
-        const titleMatches = product.title.toLocaleLowerCase("ar").includes(term);
+        const titleMatches    = product.title.toLocaleLowerCase("ar").includes(term);
         const categoryMatches = (CATEGORY_LABELS[product.category] || product.category)
-          .toLocaleLowerCase("ar")
-          .includes(term);
-        const matchesSearch = !term || titleMatches || categoryMatches;
+          .toLocaleLowerCase("ar").includes(term);
+        const matchesSearch   = !term || titleMatches || categoryMatches;
 
         let matchesFilter = true;
-        if (state.productFilter === "available") matchesFilter = product.is_available;
+        if (state.productFilter === "available")   matchesFilter = product.is_available;
         if (state.productFilter === "unavailable") matchesFilter = !product.is_available;
-        if (state.productFilter === "hot") matchesFilter = product.is_hot;
+        if (state.productFilter === "hot")         matchesFilter = product.is_hot;
 
         return matchesSearch && matchesFilter;
       });
@@ -2472,12 +2263,10 @@
 
     function productPriceLabel(product) {
       if (!product.variations.length) return `${formatPrice(product.price)} DA`;
-
-      const prices = product.variations.map((variation) => variation.price).filter(Number.isFinite);
+      const prices   = product.variations.map((v) => v.price).filter(Number.isFinite);
       if (!prices.length) return `${formatPrice(product.price)} DA`;
-
-      const minimum = Math.min(...prices);
-      const maximum = Math.max(...prices);
+      const minimum  = Math.min(...prices);
+      const maximum  = Math.max(...prices);
       if (minimum === maximum) return `${formatPrice(minimum)} DA`;
       return `${formatPrice(minimum)} - ${formatPrice(maximum)} DA`;
     }
@@ -2486,17 +2275,35 @@
       if (!product.image_url) {
         return `<span class="product-thumb product-thumb-fallback">DZ</span>`;
       }
-
       return `<img class="product-thumb" src="${escapeHtml(product.image_url)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.outerHTML='<span class=&quot;product-thumb product-thumb-fallback&quot;>DZ</span>'">`;
     }
 
-    function renderProducts() {
-      const products = getFilteredProducts();
-      const totalVariations = state.products.reduce((sum, product) => sum + product.variations.length, 0);
+    /**
+     * ✅ availabilityBadgeMarkup — شارة الحالة في عمود الجدول
+     */
+    function availabilityBadgeMarkup(isAvailable) {
+      if (isAvailable) {
+        return `
+          <span class="availability-badge badge-available" title="المنتج متوفر وقابل للطلب">
+            <span class="badge-dot"></span>
+            نشط
+          </span>`;
+      }
+      return `
+        <span class="availability-badge badge-unavailable" title="المنتج موقوف مؤقتاً">
+          <span class="badge-dot"></span>
+          موقوف
+        </span>`;
+    }
 
-      document.getElementById("metricProducts").textContent = String(state.products.length);
-      document.getElementById("metricAvailable").textContent = String(state.products.filter((product) => product.is_available).length);
-      document.getElementById("metricHot").textContent = String(state.products.filter((product) => product.is_hot).length);
+    function renderProducts() {
+      const products        = getFilteredProducts();
+      const totalVariations = state.products.reduce((sum, p) => sum + p.variations.length, 0);
+
+      // تحديث الإحصائيات
+      document.getElementById("metricProducts").textContent   = String(state.products.length);
+      document.getElementById("metricAvailable").textContent  = String(state.products.filter((p) => p.is_available).length);
+      document.getElementById("metricHot").textContent        = String(state.products.filter((p) => p.is_hot).length);
       document.getElementById("metricVariations").textContent = String(totalVariations);
 
       elements.productsError.classList.remove("show");
@@ -2511,40 +2318,107 @@
       elements.productsTableWrap.style.display = "block";
       elements.productsEmpty.classList.remove("show");
 
-      elements.productsTableBody.innerHTML = products.map((product) => `
-        <tr>
-          <td>
-            <div class="product-cell">
-              ${productThumbMarkup(product)}
-              <div>
-                <strong title="${escapeHtml(product.title)}">${escapeHtml(product.title || "بدون اسم")}</strong>
-                <span>ID: ${escapeHtml(product.id)}</span>
+      elements.productsTableBody.innerHTML = products.map((product) => {
+        // ✅ صف المنتج غير المتوفر يحصل على كلاس row-unavailable للتمييز البصري
+        const rowClass = !product.is_available ? "row-unavailable" : "";
+
+        return `
+          <tr class="${rowClass}" data-product-id="${escapeHtml(product.id)}">
+
+            <!-- عمود المنتج -->
+            <td>
+              <div class="product-cell">
+                ${productThumbMarkup(product)}
+                <div>
+                  <strong title="${escapeHtml(product.title)}">${escapeHtml(product.title || "بدون اسم")}</strong>
+                  <span>ID: ${escapeHtml(product.id)}</span>
+                </div>
               </div>
-            </div>
-          </td>
-          <td><span class="category-tag">${escapeHtml(CATEGORY_LABELS[product.category] || product.category || "غير مصنف")}</span></td>
-          <td><span class="price-text">${escapeHtml(productPriceLabel(product))}</span></td>
-          <td>
-            <button type="button" class="toggle" data-action="toggle-product-field" data-id="${escapeHtml(product.id)}" data-field="is_available" role="switch" aria-checked="${product.is_available}" aria-label="تغيير توفر ${escapeHtml(product.title)}"></button>
-          </td>
-          <td>
-            <button type="button" class="toggle hot" data-action="toggle-product-field" data-id="${escapeHtml(product.id)}" data-field="is_hot" role="switch" aria-checked="${product.is_hot}" aria-label="تغيير الأكثر مبيعاً للمنتج ${escapeHtml(product.title)}"></button>
-          </td>
-          <td><span class="category-tag">${product.variations.length} باقة</span></td>
-          <td>
-            <div class="row-actions">
-              <button type="button" class="row-action" data-action="edit-product" data-id="${escapeHtml(product.id)}" title="تعديل" aria-label="تعديل ${escapeHtml(product.title)}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13.5 6.5 17.5 10.5M4 20l4.2-1 10.4-10.4a2.8 2.8 0 0 0-4-4L4.2 15 4 20Z"></path></svg>
+            </td>
+
+            <!-- عمود القسم -->
+            <td>
+              <span class="category-tag">
+                ${escapeHtml(CATEGORY_LABELS[product.category] || product.category || "غير مصنف")}
+              </span>
+            </td>
+
+            <!-- عمود السعر -->
+            <td>
+              <span class="price-text">${escapeHtml(productPriceLabel(product))}</span>
+            </td>
+
+            <!-- ✅ عمود الحالة — Badge نشط / موقوف -->
+            <td>${availabilityBadgeMarkup(product.is_available)}</td>
+
+            <!-- عمود التوفر — Toggle لتغيير is_available مباشرة -->
+            <td>
+              <button
+                type="button"
+                class="toggle"
+                data-action="toggle-product-field"
+                data-id="${escapeHtml(product.id)}"
+                data-field="is_available"
+                role="switch"
+                aria-checked="${product.is_available}"
+                aria-label="تغيير توفر ${escapeHtml(product.title)}">
               </button>
-              <button type="button" class="row-action danger" data-action="delete-product" data-id="${escapeHtml(product.id)}" title="حذف" aria-label="حذف ${escapeHtml(product.title)}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"></path></svg>
+            </td>
+
+            <!-- عمود الأكثر مبيعاً -->
+            <td>
+              <button
+                type="button"
+                class="toggle hot"
+                data-action="toggle-product-field"
+                data-id="${escapeHtml(product.id)}"
+                data-field="is_hot"
+                role="switch"
+                aria-checked="${product.is_hot}"
+                aria-label="تغيير الأكثر مبيعاً للمنتج ${escapeHtml(product.title)}">
               </button>
-            </div>
-          </td>
-        </tr>
-      `).join("");
+            </td>
+
+            <!-- عمود الباقات -->
+            <td>
+              <span class="category-tag">${product.variations.length} باقة</span>
+            </td>
+
+            <!-- عمود الإجراءات -->
+            <td>
+              <div class="row-actions">
+                <button
+                  type="button"
+                  class="row-action"
+                  data-action="edit-product"
+                  data-id="${escapeHtml(product.id)}"
+                  title="تعديل"
+                  aria-label="تعديل ${escapeHtml(product.title)}">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M13.5 6.5 17.5 10.5M4 20l4.2-1 10.4-10.4a2.8 2.8 0 0 0-4-4L4.2 15 4 20Z"></path>
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  class="row-action danger"
+                  data-action="delete-product"
+                  data-id="${escapeHtml(product.id)}"
+                  title="حذف"
+                  aria-label="حذف ${escapeHtml(product.title)}">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"></path>
+                  </svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
     }
 
+    /* ══════════════════════════════════════════════════════════════════
+       RENDER — PROMOS TABLE
+       ══════════════════════════════════════════════════════════════════ */
     function getFilteredPromos() {
       const term = state.promoSearch.trim().toUpperCase();
       return state.promos.filter((promo) => !term || promo.code.toUpperCase().includes(term));
@@ -2575,15 +2449,33 @@
             </span>
           </td>
           <td>
-            <button type="button" class="toggle" data-action="toggle-promo" data-code="${escapeHtml(promo.code)}" role="switch" aria-checked="${promo.is_active}" aria-label="تغيير حالة الكود ${escapeHtml(promo.code)}"></button>
+            <button type="button" class="toggle"
+              data-action="toggle-promo"
+              data-code="${escapeHtml(promo.code)}"
+              role="switch"
+              aria-checked="${promo.is_active}"
+              aria-label="تغيير حالة الكود ${escapeHtml(promo.code)}">
+            </button>
           </td>
           <td>
             <div class="row-actions">
-              <button type="button" class="row-action" data-action="edit-promo" data-code="${escapeHtml(promo.code)}" title="تعديل" aria-label="تعديل الكود ${escapeHtml(promo.code)}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13.5 6.5 17.5 10.5M4 20l4.2-1 10.4-10.4a2.8 2.8 0 0 0-4-4L4.2 15 4 20Z"></path></svg>
+              <button type="button" class="row-action"
+                data-action="edit-promo"
+                data-code="${escapeHtml(promo.code)}"
+                title="تعديل"
+                aria-label="تعديل الكود ${escapeHtml(promo.code)}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M13.5 6.5 17.5 10.5M4 20l4.2-1 10.4-10.4a2.8 2.8 0 0 0-4-4L4.2 15 4 20Z"></path>
+                </svg>
               </button>
-              <button type="button" class="row-action danger" data-action="delete-promo" data-code="${escapeHtml(promo.code)}" title="حذف" aria-label="حذف الكود ${escapeHtml(promo.code)}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"></path></svg>
+              <button type="button" class="row-action danger"
+                data-action="delete-promo"
+                data-code="${escapeHtml(promo.code)}"
+                title="حذف"
+                aria-label="حذف الكود ${escapeHtml(promo.code)}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"></path>
+                </svg>
               </button>
             </div>
           </td>
@@ -2591,6 +2483,14 @@
       `).join("");
     }
 
+    /* ══════════════════════════════════════════════════════════════════
+       PRODUCT MODAL
+       ══════════════════════════════════════════════════════════════════ */
+
+    /**
+     * ✅ openProductModal — يقرأ is_available الحقيقية من الداتابيز
+     *    ويعكسها في الـ Toggle بشكل صحيح دون أي تعديل على القيمة
+     */
     function openProductModal(productId = null) {
       const form = document.getElementById("productForm");
       form.reset();
@@ -2600,32 +2500,39 @@
         ? null
         : state.products.find((item) => String(item.id) === String(productId));
 
-      document.getElementById("productModalTitle").textContent = product ? "تعديل المنتج" : "إضافة منتج";
+      document.getElementById("productModalTitle").textContent =
+        product ? "تعديل المنتج" : "إضافة منتج";
 
       if (product) {
-        document.getElementById("productTitle").value = product.title;
-        document.getElementById("productCategory").value = product.category;
-        document.getElementById("productImage").value = product.image_url;
-        document.getElementById("productPrice").value = String(product.price);
-        document.getElementById("productDiscord").value = product.discord_link;
+        // — تعبئة الحقول من بيانات الداتابيز —
+        document.getElementById("productTitle").value       = product.title;
+        document.getElementById("productCategory").value   = product.category;
+        document.getElementById("productImage").value      = product.image_url;
+        document.getElementById("productPrice").value      = String(product.price);
+        document.getElementById("productDiscord").value    = product.discord_link;
         document.getElementById("productDescription").value = product.description;
+
+        // ✅ is_available يُقرأ كما هو من mapProductRow — false يبقى false
         setToggleState(
           document.getElementById("productAvailableToggle"),
           document.getElementById("productAvailableInput"),
-          product.is_available
+          product.is_available  // القيمة الحقيقية من DB
         );
+
         setToggleState(
           document.getElementById("productHotToggle"),
           document.getElementById("productHotInput"),
           product.is_hot
         );
-        state.draftVariations = product.variations.map((variation) => ({ ...variation }));
+
+        state.draftVariations = product.variations.map((v) => ({ ...v }));
       } else {
+        // — قيم افتراضية للمنتج الجديد —
         document.getElementById("productPrice").value = "0";
         setToggleState(
           document.getElementById("productAvailableToggle"),
           document.getElementById("productAvailableInput"),
-          true
+          true   // منتج جديد متوفر افتراضياً
         );
         setToggleState(
           document.getElementById("productHotToggle"),
@@ -2635,33 +2542,87 @@
         state.draftVariations = [];
       }
 
+      // ✅ تحديث التمييز البصري للحقل بعد تعبئة القيم
+      syncAvailabilityFieldStyle();
       renderDraftVariations();
       showModal(elements.productModal);
     }
 
+    /**
+     * ✅ syncAvailabilityFieldStyle — يحدّث ستايل حقل is_available
+     *    ليعكس الحالة الحالية بصرياً (حدود حمراء عند الإيقاف)
+     */
+    function syncAvailabilityFieldStyle() {
+      const field  = document.getElementById("availabilityField");
+      const input  = document.getElementById("productAvailableInput");
+      if (!field || !input) return;
+      const isOff  = input.value === "false";
+      field.classList.toggle("availability-field-off", isOff);
+    }
+
+    /* ══════════════════════════════════════════════════════════════════
+       DRAFT VARIATIONS
+       ══════════════════════════════════════════════════════════════════ */
     function renderDraftVariations() {
       if (!state.draftVariations.length) {
         elements.variationsList.innerHTML = `
-          <div class="variation-empty">لا توجد باقات. يمكنك الاكتفاء بالسعر الأساسي أو إضافة باقة جديدة.</div>
-        `;
+          <div class="variation-empty">
+            لا توجد باقات. يمكنك الاكتفاء بالسعر الأساسي أو إضافة باقة جديدة.
+          </div>`;
         return;
       }
 
       elements.variationsList.innerHTML = state.draftVariations.map((variation, index) => `
         <div class="variation-row" data-variation-index="${index}">
-          <input class="form-control" type="text" value="${escapeHtml(variation.name)}" data-variation-field="name" data-index="${index}" placeholder="اسم الباقة" aria-label="اسم الباقة ${index + 1}">
-          <input class="form-control" type="number" value="${escapeHtml(variation.price)}" min="0" step="0.01" inputmode="decimal" data-variation-field="price" data-index="${index}" placeholder="السعر" aria-label="سعر الباقة ${index + 1}">
+          <input
+            class="form-control"
+            type="text"
+            value="${escapeHtml(variation.name)}"
+            data-variation-field="name"
+            data-index="${index}"
+            placeholder="اسم الباقة"
+            aria-label="اسم الباقة ${index + 1}">
+          <input
+            class="form-control"
+            type="number"
+            value="${escapeHtml(variation.price)}"
+            min="0"
+            step="0.01"
+            inputmode="decimal"
+            data-variation-field="price"
+            data-index="${index}"
+            placeholder="السعر"
+            aria-label="سعر الباقة ${index + 1}">
           <div class="variation-availability">
-            <button type="button" class="toggle" data-action="toggle-variation" data-index="${index}" role="switch" aria-checked="${variation.is_available}" aria-label="تغيير توفر الباقة ${index + 1}"></button>
+            <button
+              type="button"
+              class="toggle"
+              data-action="toggle-variation"
+              data-index="${index}"
+              role="switch"
+              aria-checked="${variation.is_available}"
+              aria-label="تغيير توفر الباقة ${index + 1}">
+            </button>
             <span>${variation.is_available ? "متاحة" : "متوقفة"}</span>
           </div>
-          <button type="button" class="row-action danger" data-action="remove-variation" data-index="${index}" title="حذف الباقة" aria-label="حذف الباقة ${index + 1}">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13"></path></svg>
+          <button
+            type="button"
+            class="row-action danger"
+            data-action="remove-variation"
+            data-index="${index}"
+            title="حذف الباقة"
+            aria-label="حذف الباقة ${index + 1}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13"></path>
+            </svg>
           </button>
         </div>
       `).join("");
     }
 
+    /* ══════════════════════════════════════════════════════════════════
+       PROMO MODAL
+       ══════════════════════════════════════════════════════════════════ */
     function openPromoModal(code = null) {
       const form = document.getElementById("promoForm");
       form.reset();
@@ -2671,10 +2632,11 @@
         ? null
         : state.promos.find((item) => item.code === code);
 
-      document.getElementById("promoModalTitle").textContent = promo ? "تعديل كود الخصم" : "إضافة كود خصم";
+      document.getElementById("promoModalTitle").textContent =
+        promo ? "تعديل كود الخصم" : "إضافة كود خصم";
 
       if (promo) {
-        document.getElementById("promoCode").value = promo.code;
+        document.getElementById("promoCode").value     = promo.code;
         document.getElementById("promoDiscount").value = String(promo.discount_percent);
         setToggleState(
           document.getElementById("promoActiveToggle"),
@@ -2688,13 +2650,15 @@
           true
         );
       }
-
       showModal(elements.promoModal);
     }
 
+    /* ══════════════════════════════════════════════════════════════════
+       SETTINGS FORM
+       ══════════════════════════════════════════════════════════════════ */
     function populateSettingsForm(settings) {
-      document.getElementById("telegramLink").value = settings.telegram_link;
-      document.getElementById("discordLink").value = settings.discord_link;
+      document.getElementById("telegramLink").value     = settings.telegram_link;
+      document.getElementById("discordLink").value      = settings.discord_link;
       document.getElementById("announcementText").value = settings.announcement_text;
       setToggleState(
         document.getElementById("storeActiveToggle"),
@@ -2706,29 +2670,39 @@
     }
 
     function updateStoreStateCopy(isActive) {
-      document.getElementById("storeStateTitle").textContent = isActive ? "نشط حالياً" : "وضع الصيانة 🚧";
-      document.getElementById("storeStateSubtitle").textContent = isActive
-        ? "الطلبات متاحة للعملاء"
-        : "استقبال الطلبات متوقف";
+      document.getElementById("storeStateTitle").textContent    = isActive ? "نشط حالياً"           : "وضع الصيانة 🚧";
+      document.getElementById("storeStateSubtitle").textContent = isActive ? "الطلبات متاحة للعملاء" : "استقبال الطلبات متوقف";
     }
 
     function updateAnnouncementPreview(value) {
       const text = String(value || "").trim();
       document.getElementById("announcementPreview").textContent = text || "لا يوجد إعلان حالياً.";
-      document.getElementById("announcementCount").textContent = `${String(value || "").length} / 180`;
+      document.getElementById("announcementCount").textContent   = `${String(value || "").length} / 180`;
     }
 
+    /* ══════════════════════════════════════════════════════════════════
+       CONFIRMATION DIALOG
+       ══════════════════════════════════════════════════════════════════ */
     function openConfirmation({ title, message, confirmLabel, onConfirm }) {
       state.pendingConfirmation = onConfirm;
-      document.getElementById("confirmTitle").textContent = title;
-      document.getElementById("confirmMessage").innerHTML = message;
+      document.getElementById("confirmTitle").textContent  = title;
+      document.getElementById("confirmMessage").innerHTML  = message;
       document.getElementById("confirmActionButton").textContent = confirmLabel;
       showModal(elements.confirmModal);
     }
 
+    /* ══════════════════════════════════════════════════════════════════
+       DB ACTIONS — PRODUCTS
+       ══════════════════════════════════════════════════════════════════ */
+
+    /**
+     * ✅ toggleProductField — يحدّث is_available أو is_hot في DB
+     *    ثم يعيد رسم الجدول بما يشمل صف المنتج غير المتوفر
+     *    المنتج لا يُحذف ولا يُخفى — يبقى ظاهراً دائماً
+     */
     async function toggleProductField(button) {
       const product = state.products.find((item) => String(item.id) === String(button.dataset.id));
-      const field = button.dataset.field;
+      const field   = button.dataset.field;
 
       if (!product || !["is_available", "is_hot"].includes(field)) return;
 
@@ -2743,10 +2717,19 @@
 
         if (error) throw error;
 
+        // تحديث الحالة المحلية
         product[field] = nextValue;
         registerRequestSuccess();
+
+        // إعادة رسم الجدول — المنتج يبقى في القائمة
         renderProducts();
-        showToast(field === "is_available" ? "تم تحديث حالة التوفر." : "تم تحديث حالة الأكثر مبيعاً.", "success");
+
+        showToast(
+          field === "is_available"
+            ? (nextValue ? "✅ تم تفعيل المنتج." : "⏸️ تم إيقاف المنتج مؤقتاً.")
+            : "تم تحديث حالة الأكثر مبيعاً.",
+          "success"
+        );
       } catch (error) {
         console.error("toggleProductField error:", error);
         registerRequestFailure();
@@ -2755,60 +2738,34 @@
       }
     }
 
-    async function togglePromo(button) {
-      const promo = state.promos.find((item) => item.code === button.dataset.code);
-      if (!promo) return;
-
-      const nextValue = !promo.is_active;
-      button.disabled = true;
-
-      try {
-        const { error } = await supabaseClient
-          .from("promo_codes")
-          .update({ is_active: nextValue })
-          .eq("code", promo.code);
-
-        if (error) throw error;
-
-        promo.is_active = nextValue;
-        registerRequestSuccess();
-        renderPromos();
-        showToast("تم تحديث حالة كود الخصم.", "success");
-      } catch (error) {
-        console.error("togglePromo error:", error);
-        registerRequestFailure();
-        button.disabled = false;
-        showToast(`تعذر تحديث الكود: ${errorMessage(error, "خطأ غير معروف")}`, "error");
-      }
-    }
-
     async function saveProduct(form) {
       const saveButton = document.getElementById("saveProductButton");
-      const formData = new FormData(form);
+      const formData   = new FormData(form);
 
       const variations = state.draftVariations
-        .map((variation) => ({
-          id: String(variation.id || generateLocalId()),
-          name: String(variation.name || "").trim(),
-          price: toNumber(variation.price, 0),
-          is_available: Boolean(variation.is_available)
+        .map((v) => ({
+          id:           String(v.id || generateLocalId()),
+          name:         String(v.name || "").trim(),
+          price:        toNumber(v.price, 0),
+          is_available: Boolean(v.is_available)
         }))
-        .filter((variation) => variation.name !== "");
+        .filter((v) => v.name !== "");
 
       if (state.draftVariations.length !== variations.length) {
         showToast("يرجى كتابة اسم لكل باقة أو حذف الصف الفارغ.", "error");
         return;
       }
 
+      // ✅ is_available تُقرأ من الـ hidden input الذي يعكس حالة الـ Toggle
       const payload = {
-        title: String(formData.get("title") || "").trim(),
-        category: String(formData.get("category") || "").trim(),
-        image_url: String(formData.get("image_url") || "").trim(),
-        price: toNumber(formData.get("price"), 0),
-        description: String(formData.get("description") || "").trim(),
-        is_available: toBoolean(formData.get("is_available"), true),
-        is_hot: toBoolean(formData.get("is_hot"), false),
-        discord_link: String(formData.get("discord_link") || "").trim(),
+        title:        String(formData.get("title")        || "").trim(),
+        category:     String(formData.get("category")     || "").trim(),
+        image_url:    String(formData.get("image_url")    || "").trim(),
+        price:        toNumber(formData.get("price"), 0),
+        description:  String(formData.get("description")  || "").trim(),
+        is_available: toBoolean(formData.get("is_available"), true),   // ✅ القيمة الحقيقية
+        is_hot:       toBoolean(formData.get("is_hot"),       false),
+        discord_link: String(formData.get("discord_link")  || "").trim(),
         variations
       };
 
@@ -2839,17 +2796,25 @@
         const { data, error } = await query;
         if (error) throw error;
 
-        const savedProduct = mapProductRow(data);
-        const existingIndex = state.products.findIndex((product) => String(product.id) === String(savedProduct.id));
+        const savedProduct    = mapProductRow(data);
+        const existingIndex   = state.products.findIndex(
+          (p) => String(p.id) === String(savedProduct.id)
+        );
 
+        // تحديث أو إضافة المنتج في الـ state
         if (existingIndex >= 0) state.products[existingIndex] = savedProduct;
-        else state.products.push(savedProduct);
+        else                    state.products.push(savedProduct);
 
         state.products.sort((a, b) => a.title.localeCompare(b.title, "ar"));
         registerRequestSuccess();
         renderProducts();
         closeModal(elements.productModal);
-        showToast(state.editingProductId !== null ? "تم تحديث المنتج بنجاح." : "تمت إضافة المنتج بنجاح.", "success");
+        showToast(
+          state.editingProductId !== null
+            ? "✅ تم تحديث المنتج بنجاح."
+            : "✅ تمت إضافة المنتج بنجاح.",
+          "success"
+        );
         state.editingProductId = null;
       } catch (error) {
         console.error("saveProduct error:", error);
@@ -2887,13 +2852,43 @@
       }
     }
 
+    /* ══════════════════════════════════════════════════════════════════
+       DB ACTIONS — PROMOS
+       ══════════════════════════════════════════════════════════════════ */
+    async function togglePromo(button) {
+      const promo = state.promos.find((item) => item.code === button.dataset.code);
+      if (!promo) return;
+
+      const nextValue   = !promo.is_active;
+      button.disabled   = true;
+
+      try {
+        const { error } = await supabaseClient
+          .from("promo_codes")
+          .update({ is_active: nextValue })
+          .eq("code", promo.code);
+
+        if (error) throw error;
+
+        promo.is_active = nextValue;
+        registerRequestSuccess();
+        renderPromos();
+        showToast("تم تحديث حالة كود الخصم.", "success");
+      } catch (error) {
+        console.error("togglePromo error:", error);
+        registerRequestFailure();
+        button.disabled = false;
+        showToast(`تعذر تحديث الكود: ${errorMessage(error, "خطأ غير معروف")}`, "error");
+      }
+    }
+
     async function savePromo(form) {
       const saveButton = document.getElementById("savePromoButton");
-      const formData = new FormData(form);
-      const payload = {
-        code: String(formData.get("code") || "").trim().toUpperCase(),
+      const formData   = new FormData(form);
+      const payload    = {
+        code:             String(formData.get("code") || "").trim().toUpperCase(),
         discount_percent: toNumber(formData.get("discount_percent"), 0),
-        is_active: toBoolean(formData.get("is_active"), true)
+        is_active:        toBoolean(formData.get("is_active"), true)
       };
 
       if (!payload.code || payload.discount_percent <= 0 || payload.discount_percent > 100) {
@@ -2901,8 +2896,8 @@
         return;
       }
 
-      const duplicate = state.promos.some((promo) =>
-        promo.code.toUpperCase() === payload.code && promo.code !== state.editingPromoCode
+      const duplicate = state.promos.some(
+        (promo) => promo.code.toUpperCase() === payload.code && promo.code !== state.editingPromoCode
       );
 
       if (duplicate) {
@@ -2932,17 +2927,20 @@
         const { data, error } = await query;
         if (error) throw error;
 
-        const savedPromo = mapPromoRow(data);
+        const savedPromo    = mapPromoRow(data);
         const existingIndex = state.promos.findIndex((promo) => promo.code === state.editingPromoCode);
 
         if (existingIndex >= 0) state.promos[existingIndex] = savedPromo;
-        else state.promos.push(savedPromo);
+        else                    state.promos.push(savedPromo);
 
         state.promos.sort((a, b) => a.code.localeCompare(b.code));
         registerRequestSuccess();
         renderPromos();
         closeModal(elements.promoModal);
-        showToast(state.editingPromoCode !== null ? "تم تحديث كود الخصم." : "تمت إضافة كود الخصم.", "success");
+        showToast(
+          state.editingPromoCode !== null ? "تم تحديث كود الخصم." : "تمت إضافة كود الخصم.",
+          "success"
+        );
         state.editingPromoCode = null;
       } catch (error) {
         console.error("savePromo error:", error);
@@ -2980,14 +2978,17 @@
       }
     }
 
+    /* ══════════════════════════════════════════════════════════════════
+       DB ACTIONS — SETTINGS
+       ══════════════════════════════════════════════════════════════════ */
     async function saveSettings(form) {
       const saveButton = document.getElementById("saveSettingsButton");
-      const formData = new FormData(form);
-      const payload = {
-        id: SETTINGS_ROW_ID,
-        is_active: toBoolean(formData.get("is_active"), true),
-        telegram_link: String(formData.get("telegram_link") || "").trim(),
-        discord_link: String(formData.get("discord_link") || "").trim(),
+      const formData   = new FormData(form);
+      const payload    = {
+        id:                SETTINGS_ROW_ID,
+        is_active:         toBoolean(formData.get("is_active"), true),
+        telegram_link:     String(formData.get("telegram_link")     || "").trim(),
+        discord_link:      String(formData.get("discord_link")      || "").trim(),
         announcement_text: String(formData.get("announcement_text") || "").trim()
       };
 
@@ -3015,16 +3016,16 @@
       }
     }
 
+    /* ══════════════════════════════════════════════════════════════════
+       EVENT HANDLERS
+       ══════════════════════════════════════════════════════════════════ */
     function handleDocumentClick(event) {
+      // — التنقل بين الصفحات —
       const viewButton = event.target.closest("[data-view]");
-      if (viewButton) {
-        switchView(viewButton.dataset.view);
-        return;
-      }
+      if (viewButton) { switchView(viewButton.dataset.view); return; }
 
       const actionElement = event.target.closest("[data-action]");
       if (!actionElement) return;
-
       const action = actionElement.dataset.action;
 
       if (action === "open-sidebar") {
@@ -3038,56 +3039,37 @@
       }
 
       if (action === "logout") {
-        try {
-          localStorage.removeItem("admin_authenticated");
-        } catch (error) {
-          console.warn("تعذر حذف جلسة الإدارة:", error);
-        }
+        try { localStorage.removeItem("admin_authenticated"); } catch (e) {}
         window.location.reload();
         return;
       }
 
       if (action === "refresh-current") {
         if (state.activeView === "products") loadProducts();
-        if (state.activeView === "promos") loadPromos();
+        if (state.activeView === "promos")   loadPromos();
         if (state.activeView === "settings") loadSettings({ notify: true });
         return;
       }
 
-      if (action === "open-product-modal") {
-        openProductModal();
-        return;
-      }
-
-      if (action === "edit-product") {
-        openProductModal(actionElement.dataset.id);
-        return;
-      }
+      if (action === "open-product-modal") { openProductModal();                   return; }
+      if (action === "edit-product")       { openProductModal(actionElement.dataset.id); return; }
 
       if (action === "delete-product") {
         const product = state.products.find((item) => String(item.id) === String(actionElement.dataset.id));
         if (!product) return;
         openConfirmation({
-          title: "حذف المنتج",
-          message: `هل تريد حذف المنتج <strong>${escapeHtml(product.title)}</strong> نهائياً؟`,
-          confirmLabel: "حذف المنتج",
-          onConfirm: () => deleteProduct(product)
+          title:         "حذف المنتج",
+          message:       `هل تريد حذف المنتج <strong>${escapeHtml(product.title)}</strong> نهائياً؟`,
+          confirmLabel:  "حذف المنتج",
+          onConfirm:     () => deleteProduct(product)
         });
         return;
       }
 
-      if (action === "toggle-product-field") {
-        toggleProductField(actionElement);
-        return;
-      }
+      if (action === "toggle-product-field") { toggleProductField(actionElement); return; }
 
       if (action === "add-variation") {
-        state.draftVariations.push({
-          id: generateLocalId(),
-          name: "",
-          price: 0,
-          is_available: true
-        });
+        state.draftVariations.push({ id: generateLocalId(), name: "", price: 0, is_available: true });
         renderDraftVariations();
         const newInput = elements.variationsList.querySelector(".variation-row:last-child input");
         newInput?.focus();
@@ -3104,7 +3086,7 @@
       }
 
       if (action === "toggle-variation") {
-        const index = Number(actionElement.dataset.index);
+        const index     = Number(actionElement.dataset.index);
         const variation = state.draftVariations[index];
         if (variation) {
           variation.is_available = !variation.is_available;
@@ -3114,40 +3096,34 @@
       }
 
       if (action === "toggle-product-draft") {
-        const field = actionElement.dataset.field;
-        const input = field === "is_available"
+        const field      = actionElement.dataset.field;
+        const input      = field === "is_available"
           ? document.getElementById("productAvailableInput")
           : document.getElementById("productHotInput");
-        setToggleState(actionElement, input, actionElement.getAttribute("aria-checked") !== "true");
+        const nextValue  = actionElement.getAttribute("aria-checked") !== "true";
+        setToggleState(actionElement, input, nextValue);
+
+        // ✅ تحديث التمييز البصري لحقل is_available عند الضغط
+        if (field === "is_available") syncAvailabilityFieldStyle();
         return;
       }
 
-      if (action === "open-promo-modal") {
-        openPromoModal();
-        return;
-      }
-
-      if (action === "edit-promo") {
-        openPromoModal(actionElement.dataset.code);
-        return;
-      }
+      if (action === "open-promo-modal") { openPromoModal();                        return; }
+      if (action === "edit-promo")       { openPromoModal(actionElement.dataset.code); return; }
 
       if (action === "delete-promo") {
         const promo = state.promos.find((item) => item.code === actionElement.dataset.code);
         if (!promo) return;
         openConfirmation({
-          title: "حذف كود الخصم",
-          message: `هل تريد حذف الكود <strong dir="ltr">${escapeHtml(promo.code)}</strong> نهائياً؟`,
-          confirmLabel: "حذف الكود",
-          onConfirm: () => deletePromo(promo)
+          title:         "حذف كود الخصم",
+          message:       `هل تريد حذف الكود <strong dir="ltr">${escapeHtml(promo.code)}</strong> نهائياً؟`,
+          confirmLabel:  "حذف الكود",
+          onConfirm:     () => deletePromo(promo)
         });
         return;
       }
 
-      if (action === "toggle-promo") {
-        togglePromo(actionElement);
-        return;
-      }
+      if (action === "toggle-promo") { togglePromo(actionElement); return; }
 
       if (action === "toggle-promo-draft") {
         setToggleState(
@@ -3165,10 +3141,7 @@
         return;
       }
 
-      if (action === "reload-settings") {
-        loadSettings({ notify: true });
-        return;
-      }
+      if (action === "reload-settings") { loadSettings({ notify: true }); return; }
 
       if (action === "close-modal") {
         closeModal(actionElement.closest(".modal-overlay"));
@@ -3194,10 +3167,9 @@
       }
 
       if (event.target.matches("[data-variation-field]")) {
-        const index = Number(event.target.dataset.index);
-        const field = event.target.dataset.variationField;
+        const index     = Number(event.target.dataset.index);
+        const field     = event.target.dataset.variationField;
         const variation = state.draftVariations[index];
-
         if (!variation || !["name", "price"].includes(field)) return;
         variation[field] = field === "price" ? toNumber(event.target.value, 0) : event.target.value;
         return;
@@ -3219,22 +3191,16 @@
       const form = event.target.closest("[data-form]");
       if (!form) return;
       event.preventDefault();
-
       if (!form.reportValidity()) return;
-      if (form.dataset.form === "product") saveProduct(form);
-      if (form.dataset.form === "promo") savePromo(form);
+      if (form.dataset.form === "product")  saveProduct(form);
+      if (form.dataset.form === "promo")    savePromo(form);
       if (form.dataset.form === "settings") saveSettings(form);
     }
 
     function handleKeydown(event) {
       if (event.key !== "Escape") return;
-
       const activeModal = document.querySelector(".modal-overlay.show");
-      if (activeModal) {
-        closeModal(activeModal);
-        return;
-      }
-
+      if (activeModal) { closeModal(activeModal); return; }
       document.body.classList.remove("sidebar-open");
     }
 
@@ -3244,6 +3210,9 @@
       }
     }
 
+    /* ══════════════════════════════════════════════════════════════════
+       INITIALIZATION
+       ══════════════════════════════════════════════════════════════════ */
     async function initializeDashboard() {
       setConnectionState("pending", "جار الاتصال بـ Supabase");
       populateSettingsForm(state.settings);
@@ -3255,12 +3224,12 @@
       ]);
     }
 
-    document.addEventListener("click", handleDocumentClick);
-    document.addEventListener("input", handleDocumentInput);
-    document.addEventListener("change", handleDocumentChange);
-    document.addEventListener("submit", handleDocumentSubmit);
+    document.addEventListener("click",   handleDocumentClick);
+    document.addEventListener("input",   handleDocumentInput);
+    document.addEventListener("change",  handleDocumentChange);
+    document.addEventListener("submit",  handleDocumentSubmit);
     document.addEventListener("keydown", handleKeydown);
-    document.addEventListener("click", handleBackdropClick);
+    document.addEventListener("click",   handleBackdropClick);
     document.addEventListener("DOMContentLoaded", initializeDashboard);
   </script>
 </body>

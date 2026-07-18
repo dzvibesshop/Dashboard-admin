@@ -119,3 +119,100 @@
   transform: scale(1) !important;
   opacity: 1 !important;
 }
+
+
+/* ══════════════════════════════════════════════════════════════════
+   OUT-OF-STOCK — Card, Badge, Image, Button
+   ══════════════════════════════════════════════════════════════════ */
+
+/* الكارت كاملاً — تخفيف الإضاءة والحدود */
+.product-card.out-of-stock {
+  opacity: 0.65;
+  filter: grayscale(35%);
+  border-color: #3f3f3f !important;
+  box-shadow: none;
+  pointer-events: auto; /* نبقّي الكارت قابلاً للتفاعل لأزرار التعديل/الحذف */
+}
+
+/* تأثير hover مُلغى للكارت غير المتوفر */
+.product-card.out-of-stock:hover {
+  border-color: #3f3f3f !important;
+  transform: none;
+}
+
+/* الصورة — تخفيف إضافي */
+.product-img-dimmed {
+  filter: brightness(0.55) saturate(0.6);
+  transition: filter 0.3s ease;
+}
+
+/* ── شارة "غير متوفر" ── */
+.out-of-stock-badge {
+  /* الموضع فوق الصورة */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* التصميم */
+  background-color: #dc2626;          /* أحمر */
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  font-family: 'Cairo', 'Tajawal', sans-serif;
+  letter-spacing: 0.5px;
+  padding: 6px 16px;
+  border-radius: 9999px;              /* pill shape */
+  white-space: nowrap;
+
+  /* إطار أبيض رفيع */
+  border: 2px solid rgba(255, 255, 255, 0.25);
+
+  /* ظل ناعم */
+  box-shadow:
+    0 4px 15px rgba(220, 38, 38, 0.45),
+    0 2px 6px rgba(0, 0, 0, 0.5);
+
+  /* z-index فوق الصورة */
+  z-index: 10;
+
+  /* أنيميشن خفيف */
+  animation: badge-pulse 2.5s ease-in-out infinite;
+}
+
+/* أنيميشن نبضات خفيفة للشارة */
+@keyframes badge-pulse {
+  0%, 100% {
+    box-shadow:
+      0 4px 15px rgba(220, 38, 38, 0.45),
+      0 2px 6px rgba(0, 0, 0, 0.5);
+  }
+  50% {
+    box-shadow:
+      0 4px 22px rgba(220, 38, 38, 0.75),
+      0 2px 8px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* ── زر "غير متوفر حالياً" المعطل ── */
+.disabled-buy-btn {
+  background-color: #1f1f1f;
+  color: #6b7280;                     /* رمادي */
+  border: 1px solid #374151;
+  cursor: not-allowed !important;
+  opacity: 0.7;
+  user-select: none;
+  pointer-events: none;               /* يمنع أي نقر بشكل نهائي */
+  transition: none;
+}
+
+/* إلغاء أي hover effect */
+.disabled-buy-btn:hover {
+  background-color: #1f1f1f !important;
+  color: #6b7280 !important;
+}
+
+/* ── wrapper الصورة — يجب أن يكون relative ── */
+.product-img-wrapper {
+  position: relative;
+}
